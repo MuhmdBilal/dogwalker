@@ -1,0 +1,495 @@
+@import "../../styles/_colors.scss";
+
+.background {
+  position: relative;
+  overflow: visible;
+}
+
+.bgWrapper {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 100%;
+  z-index: 1;
+
+  .bg {
+    object-fit: cover;
+  }
+}
+
+.presale {
+  position: relative;
+  height: 50rem;
+  margin-top: 30rem;
+  padding: 0 1rem;
+  z-index: 2;
+
+  .ellipse {
+    position: absolute;
+    bottom: 10rem;
+    left: 0;
+    width: 15rem;
+    pointer-events: none;
+    z-index: 4;
+
+    &Two {
+      position: absolute;
+      width: 15rem;
+      bottom: 8rem;
+      right: 1rem;
+      z-index: 5;
+      backdrop-filter: blur(3px);
+      border-radius: 50%;
+    }
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    transform: translateY(-460%);
+    padding: 1rem;
+
+    .heading {
+      font-family: "Bogart Trial", serif;
+      font-size: 2rem;
+      font-weight: bold;
+      color: $dark-smooth;
+    }
+
+    .howToBuy {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.5rem;
+      background: #ffb94a33;
+      color: $main-color;
+      font-size: 1rem;
+      border: none;
+      border-radius: 1.2rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background: #ffe6cc;
+      }
+
+      .arrow {
+        display: inline-block;
+        font-size: 1rem;
+        transform: translateY(1px);
+      }
+    }
+  }
+  .dogTraces {
+    position: absolute;
+    top: -18.3rem;
+    right: 0;
+    z-index: 3;
+  }
+
+  .rectangle,
+  .rectangleSecond {
+    position: absolute;
+    right: 0;
+  }
+  .rectangle {
+    bottom: 0;
+  }
+  .rectangleSecond {
+    bottom: 5rem;
+  }
+
+  &__box {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 0 auto;
+    position: relative;
+    z-index: 3;
+    padding: 3rem;
+    background-color: $white-smooth;
+    box-shadow: 0 0 16px rgba(204, 169, 113, 0.22),
+      0 4px 12px rgba(0, 0, 0, 0.05);
+    border-radius: 2.5rem;
+    transform: translateY(-50%);
+  }
+
+  &__boxOne {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .priceBox {
+      background: url("/assets/img/PreSaleRectangle.svg") no-repeat center
+        center;
+      background-size: cover;
+      color: #ffb400;
+      padding: 1rem;
+      border-radius: 1.5rem;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 0.2rem;
+
+      .label {
+        font-size: 0.75rem;
+        color: $white-smooth;
+      }
+      .price {
+        font-size: 1.25rem;
+        font-weight: bold;
+      }
+      .listing {
+        font-size: 0.875rem;
+        color: $grey-smooth;
+      }
+
+      .dogLogo {
+        align-self: flex-end;
+        padding: 0.2rem;
+      }
+    }
+  }
+
+  &__boxThree {
+    .progress {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .bar {
+        position: relative;
+        height: 2.5rem;
+        background: #ffb94a1c;
+        border-radius: 2rem;
+        overflow: hidden;
+
+        .filled {
+          height: 100%;
+          background: $main-color;
+          border-top-right-radius: 2rem;
+          border-bottom-right-radius: 2rem;
+        }
+
+        .percentage {
+          position: absolute;
+          left: 10%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          font-weight: bold;
+          color: $dark-smooth;
+          white-space: nowrap;
+          z-index: 2;
+        }
+      }
+      .infoRow {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        width: 100%;
+      }
+      .sold,
+      .total {
+        display: inline-block;
+        color: $grey-smooth-2;
+      }
+    }
+  }
+
+  &__boxFour {
+    .timer {
+      background: #ffb94a1c;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .timerRow {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      font-weight: bold;
+    }
+
+    .unitGroup {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .unitBox {
+      background: #fff;
+      border-radius: 25%;
+      width: 3rem;
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .unitLabel {
+      margin-top: 0.25rem;
+      font-size: 0.85rem;
+      padding-top: 0.3rem;
+      color: $main-color;
+      text-transform: capitalize;
+    }
+
+    .colon {
+      color: #333;
+      line-height: 1;
+    }
+
+    .until {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+  }
+
+  &__boxFive {
+    padding-top: 0.5rem;
+    .cta {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      justify-content: center;
+      padding: 1.2rem 1rem;
+      background: $dark-smooth;
+      color: $white-smooth;
+      font-weight: bold;
+      border-radius: 1rem;
+      transition: 0.3s background-color;
+      cursor: pointer;
+
+      &:hover {
+        background-color: darken($main-color, 17%);
+      }
+    }
+  }
+
+  &__foot {
+    display: flex;
+    justify-content: center;
+    margin-top: -18rem;
+    padding-bottom: 2rem;
+    color: $dark-gray;
+    font-weight: bold;
+
+    .powered {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      text-align: center;
+
+      &Strong {
+        // .poweredStrong
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: $primary-color;
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .bgWrapper {
+    height: 100%;
+  }
+
+  .presale {
+    .presale__box {
+      flex-direction: row;
+      gap: 2rem;
+    }
+
+    &__boxOne {
+      flex: 2;
+    }
+    &__boxTwo {
+      flex: 3;
+    }
+    &__boxThree {
+      flex: 2;
+    }
+    &__boxFour {
+      flex: 2;
+    }
+    &__boxFive {
+      flex: 2;
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .bgWrapper {
+    height: 500px;
+  }
+
+  .presale {
+    padding: 0 4rem;
+
+    .ellipse {
+      position: absolute;
+      bottom: 5rem;
+      left: -13%;
+      width: 45rem;
+      z-index: 1;
+
+      &Two {
+        position: absolute;
+        width: 45rem;
+        bottom: 5rem;
+        right: -13%;
+        z-index: 1;
+      }
+    }
+
+    .header {
+      display: flex;
+      justify-content: flex-start;
+      gap: 2rem;
+      transform: translateY(-250%);
+
+      .heading {
+        font-size: 2.7rem;
+      }
+
+      .howToBuy {
+        font-size: 1.3rem;
+      }
+    }
+
+    &__box {
+      display: grid;
+      grid-template-columns: 4fr 2fr;
+      grid-template-rows: auto auto;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    &__boxOne {
+      grid-column: 1;
+      grid-row: 1;
+
+      .priceBox {
+        position: relative;
+        padding: 1.7rem;
+        height: 70%;
+
+        .label {
+          font-size: 1.5rem;
+          color: $white-smooth;
+          position: absolute;
+          top: 12%;
+          left: 3%;
+        }
+        .price {
+          position: absolute;
+          font-size: 2.4rem;
+          top: 25%;
+          left: 3%;
+        }
+        .listing {
+          position: absolute;
+          font-size: 1.5rem;
+          bottom: 9%;
+          left: 3%;
+        }
+
+        .vector,
+        .dogLogo {
+          align-self: flex-end;
+        }
+      }
+    }
+    &__boxThree {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    &__boxFour {
+      grid-column: 2;
+      grid-row: 1;
+
+      .timer {
+        padding: 2.7rem;
+        border-radius: 1.5rem;
+      }
+
+      .until {
+        margin-top: 1.6rem;
+      }
+
+      .unitLabel {
+        font-size: 1.2rem;
+      }
+    }
+
+    &__boxFive {
+      grid-column: 2;
+      grid-row: 2;
+
+      .cta {
+        padding: 1.4rem 1rem;
+      }
+    }
+
+    &__foot {
+      display: flex;
+      justify-content: center;
+      margin-top: -9rem;
+      padding-bottom: 2rem;
+      color: $dark-gray;
+
+      .powered {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        text-align: center;
+
+        &Strong {
+          // .poweredStrong
+          display: inline-flex;
+          align-items: center;
+          gap: 0.75rem;
+          color: $primary-color;
+          font-size: 2rem;
+        }
+      }
+    }
+    .dogTraces {
+      position: absolute;
+      top: -14.3rem;
+      right: -2.5rem;
+      z-index: 3;
+    }
+
+    .rectangle,
+    .rectangleSecond {
+      position: absolute;
+      top: -10rem;
+      bottom: auto;
+      right: calc((1200px - 100vw) / 2);
+      z-index: 3;
+    }
+
+    .rectangleSecond {
+      top: 5rem;
+    }
+  }
+}

@@ -1,0 +1,124 @@
+@import "../../styles/_colors.scss";
+
+.tokenomics {
+  position: relative;
+  padding: 4rem;
+  text-align: center;
+  background: $white-smooth;
+
+  .header {
+    margin-bottom: 2rem;
+    z-index: 25;
+
+    .heading {
+      font-family: "Bogart Trial", serif;
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: $dark-smooth;
+      margin: 0;
+    }
+
+    .subheading {
+      font-size: 1.125rem;
+      color: $grey-smooth-2;
+      margin: 0.5rem 0 0;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+  }
+
+  .chartWrapper {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 0;
+    padding-bottom: 100%;
+
+    .bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .ringsContainer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    .inner1,
+    .inner2,
+    .inner3,
+    .inner4 {
+      position: absolute;
+      z-index: 0;
+    }
+
+    .inner1 {
+      width: 100%;
+      height: 100%;
+      left: 6.5%;
+      top: -7.7%;
+    }
+
+    .inner2 {
+      width: 60%;
+      height: 60%;
+    }
+    .inner3 {
+      width: 35%;
+      height: 35%;
+      z-index: 9;
+    }
+    .inner4 {
+      width: 20%;
+      height: 20%;
+      z-index: 9;
+    }
+
+    .logoWrapper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 6;
+
+      img {
+        max-width: 120px;
+        width: 20%;
+        height: auto;
+      }
+    }
+  }
+
+  @media (min-width: 992px) {
+    .header {
+      text-align: center;
+      .heading {
+        text-align: left;
+        font-size: 3rem;
+      }
+
+      .subheading {
+        transform: translateY(250%);
+        font-size: 3rem;
+      }
+    }
+
+    .chartWrapper {
+      max-width: 1000px;
+
+      .inner1 {
+        z-index: 100;
+      }
+    }
+  }
+}

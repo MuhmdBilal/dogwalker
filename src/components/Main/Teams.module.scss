@@ -1,0 +1,243 @@
+@import "../../styles/_colors.scss";
+
+.background {
+  position: relative;
+  overflow: visible;
+  padding-top: 3rem;
+  padding-bottom: 4rem;
+  @media (min-width: 992px) {
+    padding-top: 3rem;
+    padding-bottom: 5rem;
+  }
+}
+
+.bgWrapper {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 100%;
+  z-index: 0;
+
+  background-color: $main-color;
+
+  .bg {
+    object-fit: unset;
+  }
+}
+
+.teams {
+  position: relative;
+  z-index: 2;
+  color: $white-100;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+
+    .heading {
+      font-family: "Bogart Trial", serif;
+      font-size: 2rem;
+      font-weight: bold;
+      color: $dark-smooth;
+      z-index: 10;
+    }
+    .ctaBtn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.5rem;
+      background: $white-smooth;
+      color: $dark-smooth;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 1.2rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      z-index: 100;
+
+      &:hover {
+        background: #ffe6cc;
+        color: $dark-smooth;
+      }
+
+      .arrow {
+        display: inline-block;
+        font-size: 1rem;
+        transform: translateY(1px);
+      }
+    }
+  }
+
+  &__box {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+
+    .slick-list {
+      overflow: visible;
+    }
+    .slick-track {
+      display: flex;
+    }
+    .slick-slide > div {
+      display: flex;
+      justify-content: center;
+    }
+
+    &__box .slick-slide > div {
+      max-width: none;
+    }
+  }
+
+  &__memberCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: #fddaa1d4;
+    border-radius: 1rem;
+    padding: 1rem;
+
+    .avatarWrapper {
+      margin-bottom: 0.75rem;
+    }
+    .name {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: $dark-smooth;
+    }
+    .role {
+      display: inline-block;
+      background: $white-smooth;
+      border-radius: 99px;
+      padding: 0.25rem 0.75rem;
+      font-size: 1.2rem;
+      margin-bottom: 0.75rem;
+      color: $main-color;
+    }
+    .contact {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      color: $dark-smooth;
+
+      .contactItem {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        text-decoration: none;
+        color: inherit;
+
+        .icon {
+          margin-right: 0.5rem;
+        }
+      }
+    }
+  }
+
+  .rectangle1 {
+    position: absolute;
+    top: -5%;
+    left: 5%;
+    backdrop-filter: blur(5px);
+    border-radius: 50%;
+  }
+  .rectangle2 {
+    position: absolute;
+    top: -3%;
+    left: 1%;
+    backdrop-filter: blur(3px);
+    border-radius: 50%;
+  }
+  .rectangle3 {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    backdrop-filter: blur(3px);
+    border-radius: 50%;
+  }
+  .rectangle4 {
+    position: absolute;
+    bottom: 3%;
+    right: 18%;
+    backdrop-filter: blur(3px);
+    border-radius: 50%;
+  }
+
+  @media (min-width: 992px) {
+    &__header {
+      flex-direction: row;
+      justify-content: left;
+      gap: 2rem;
+      align-items: center;
+    }
+    &__box {
+      position: relative;
+      width: 100vw;
+      left: 0;
+      overflow: hidden;
+
+      .slick-list {
+        overflow: visible;
+      }
+      .slick-track {
+        padding-right: 100vw;
+      }
+      .slick-slide {
+        margin: 0 0.75rem;
+      }
+    }
+
+    &__memberCard {
+      width: 90%;
+      gap: 1rem;
+    }
+
+    .progressBar {
+      margin-top: 3.5rem;
+      max-width: 50%;
+      .progressTrack {
+        width: 100%;
+        height: 4px;
+        background: $white-smooth;
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      .progressFill {
+        height: 100%;
+        background: $dark-smooth;
+        transition: width 0.3s ease;
+      }
+    }
+
+    .rectangle1 {
+      top: -20%;
+      left: -10%;
+      backdrop-filter: blur(5px);
+      border-radius: 50%;
+    }
+    .rectangle2 {
+      top: 5%;
+      left: -12%;
+      backdrop-filter: blur(3px);
+      border-radius: 50%;
+    }
+    .rectangle3 {
+      top: -25%;
+      right: -10%;
+    }
+    .rectangle4 {
+      top: -20%;
+      right: 1%;
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "getHelpLabel": "Get Help",
+  "faqHeading": "Frequently Asked Questions",
+  "faqDescription": "Find quick answers to common questions about our website, products, and services.<br/>Reach out to us directly with your inquiries, feedback, or support requests.<br/><br/>If you need help, please contact us.",
+  "questions": [
+    {
+      "question": "What is tokenization?",
+      "answer": "Tokenization is the process of transforming data into unique tokens that can be used in place of sensitive information in systems."
+    },
+    {
+      "question": "What are the benefits of tokenization?",
+      "answer": "Tokenization secures data, reduces fraud, and ensures privacy compliance by replacing sensitive data with tokens."
+    },
+    {
+      "question": "How does tokenization work?",
+      "answer": "When data is tokenized, the original data is stored securely while the token is used in applications and transactions in its place."
+    },
+    {
+      "question": "Is tokenization secure?",
+      "answer": "Yes—because tokens are meaningless outside the vault that maps them back to the original data, the risk of data exposure is greatly reduced."
+    },
+    {
+      "question": "Where can tokenization be used?",
+      "answer": "Tokenization is widely used in payment processing, healthcare records, and any system handling PII (Personally Identifiable Information)."
+    },
+    {
+      "question": "Are tokens tied to the source data?",
+      "answer": "No—tokens themselves carry no intrinsic value or meaning, and cannot be reverse-engineered without access to the secure token vault."
+    }
+  ],
+  "formHeading": "Haven’t found the answer to your question?",
+  "formDescription": "Don’t worry, use our ticket form. Our team will try to answer within the next 24 hours.",
+  "namePlaceholder": "Name…",
+  "emailPlaceholder": "E-mail address…",
+  "subjectPlaceholder": "Subject…",
+  "messagePlaceholder": "Type a message…",
+  "submitCTA": "Submit"
+}

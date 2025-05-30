@@ -1,0 +1,33 @@
+{
+  "title": "Everything about",
+  "highlight": "Our App",
+  "sectionTitle": "Our app features",
+  "features": [
+    {
+      "title": "Dog walk with just one click",
+      "description": "You order a walk – you find a proven caregiver in your area in a few seconds."
+    },
+    {
+      "title": "On-chain Reputation Guardians",
+      "description": "Verified reviews and walk history stored on-chain."
+    },
+    {
+      "title": "DogWalkerToken (DWT) payment",
+      "description": "Pay for services with our native token quickly and securely."
+    },
+    {
+      "title": "Missions, Rankings and Loyalty",
+      "description": "Earn rewards and climb the ranks with every walk."
+    },
+    {
+      "title": "Health and Care Calendar",
+      "description": "Track health, vet visits and grooming easily."
+    },
+    {
+      "title": "Support for shelters and adoptions",
+      "description": "Donate and connect directly with local shelters."
+    }
+  ],
+  "appStore": "Download on the App Store",
+  "googlePlay": "Get it on"
+}

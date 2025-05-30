@@ -1,0 +1,19 @@
+{
+  "heading": "Przedsprzedaż Tokena",
+  "howToBuy": "Jak kupić?",
+  "launchPriceLabel": "Cena startowa",
+  "price": "1 DWT = 0,1$",
+  "listingPriceLabel": "Cena na liście",
+  "listingPrice": "1$",
+  "soldLabel": "Sprzedano:",
+  "soldAmount": "250 DWT",
+  "totalLabel": "Łącznie DWT:",
+  "totalAmount": "10 000",
+  "days": "Dni",
+  "hours": "Godz.",
+  "mins": "Min.",
+  "secs": "Sek.",
+  "until": "Do startu przedsprzedaży",
+  "purchaseCTA": "Kup Token DogWalker",
+  "poweredPrefix": "Napędzane i wspierane przez"
+}

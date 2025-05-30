@@ -1,0 +1,38 @@
+{
+  "title": "Technologia blockchain",
+  "learnMore": "Dowiedz się więcej",
+  "blockchainLabel": "BLOCKCHAIN",
+  "blockchainHeading": "Dlaczego technologia blockchain w aplikacji DogWalker?",
+  "blockchainSubheading": "🔗 <strong>Blockchain jako podstawa zaufania, automatyzacji i niezależności</strong>",
+  "blockchainDescription": "<p><strong>DogWalkerToken (DWT)</strong> to platforma wykraczająca poza klasyczne modele aplikacji usługowych.</p><p>Naszą misją jest stworzenie ekosystemu, w którym zaufanie nie wymaga pośredników, a każda transakcja, ocena czy interakcja w aplikacji jest przejrzysta, zautomatyzowana i odporna na manipulacje.</p><p>Tradycyjne aplikacje scentralizowane zależą od decyzji operatora, zamkniętej bazy danych i ograniczeń infrastruktury. Blockchain usuwa te bariery, dając użytkownikom:</p><ul><li><strong>pełną kontrolę nad danymi i reputacją</strong></li><li><strong>bezpieczeństwo środków</strong></li><li><strong>uczciwe, nieedytowalne warunki współpracy</strong></li></ul>",
+  "bscLabel": "WIĘCEJ O NASZEJ TECHNOLOGII",
+  "bscHeading": "Dlaczego wybraliśmy Binance Smart Chain (BSC)?",
+  "bscDescription": "<strong>Binance Smart Chain (BSC) to jedna z najbardziej dojrzałych i popularnych sieci Ethereum Virtual Machine (EVM)</strong>, co czyni ją idealnym wyborem dla aplikacji o masowej adopcji, takich jak DogWalkerToken.",
+  "reasonsHeading": "Kluczowe powody wyboru BSC:",
+  "reasons": [
+    {
+      "title": "Niskie opłaty transakcyjne",
+      "description": "Mikrotransakcje (np. 0,05 USD) są możliwe, co jest niezbędne dla aplikacji o dużej częstotliwości operacji"
+    },
+    {
+      "title": "Szybkość działania (3–5 sek/blok)",
+      "description": "Natychmiastowe rozliczenie usług i stakingu, brak opóźnień"
+    },
+    {
+      "title": "Kompatybilność z EVM",
+      "description": "Łatwe pisanie i audytowanie smart kontraktów w Solidity"
+    },
+    {
+      "title": "Duża społeczność i płynność",
+      "description": "DWT może być notowany na DEXach (np. PancakeSwap), wspierany przez portfele Web3 oraz narzędzia DeFi"
+    },
+    {
+      "title": "Bezpieczeństwo",
+      "description": "Stałe aktualizacje, aktywna walidacja, wsparcie Binance Labs"
+    },
+    {
+      "title": "Zrównoważona centralizacja",
+      "description": "Pozwala na szybszy rozwój przy zachowaniu odpowiedniego poziomu decentralizacji dla aplikacji codziennego użytku"
+    }
+  ]
+}

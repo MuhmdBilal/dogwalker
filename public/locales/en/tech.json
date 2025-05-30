@@ -1,0 +1,38 @@
+{
+  "title": "Blockchain technology",
+  "learnMore": "Learn More",
+  "blockchainLabel": "BLOCKCHAIN",
+  "blockchainHeading": "Why blockchain technology in DogWalker App?",
+  "blockchainSubheading": "🔗 <strong>Blockchain as a foundation of trust, automation and independence</strong>",
+  "blockchainDescription": "<p>DogWalkerToken (DWT) is a platform that goes beyond classic models of service applications.</p><p>Our mission is to create an ecosystem in which trust does not require intermediaries, and every transaction, assessment or interaction in the application is transparent, automatic and resistant to manipulation.</p><p>Traditional centralized applications are dependent on the operator’s decisions, a closed database and infrastructure limitations. Blockchain eliminates these barriers, giving users:</p><ul><li><strong>full control over data and reputation</strong></li><li><strong>security of funds</strong></li><li><strong>fair, non-editable terms of cooperation</strong></li></ul>",
+  "bscLabel": "MORE ABOUT OUR TECHNOLOGY",
+  "bscHeading": "Why did we choose Binance Smart Chain (BSC)?",
+  "bscDescription": "<strong>Binance Smart Chain (BSC) is one of the most mature and popular Ethereum Virtual Machine (EVM)</strong> blockchain networks, making it an ideal choice for mass adoption applications like DogWalkerToken.",
+  "reasonsHeading": "Key reasons for choosing BSC:",
+  "reasons": [
+    {
+      "title": "Low transaction fees",
+      "description": "Microtransactions (e.g. 0.05 USD) are possible, which is essential for high-frequency trading applications"
+    },
+    {
+      "title": "Speed of operation (3–5 sec/block)",
+      "description": "Instant settlement of services and staking, no delays"
+    },
+    {
+      "title": "EVM Compliant",
+      "description": "Easily Write and Audit Smart Contracts in Solidity"
+    },
+    {
+      "title": "Huge community and liquidity",
+      "description": "DWT can be easily listed on DEXs (e.g. PancakeSwap), supported by Web3 wallets and DeFi tools"
+    },
+    {
+      "title": "Security",
+      "description": "Constant updates, active validation, Binance Labs support"
+    },
+    {
+      "title": "Balanced centralization",
+      "description": "Allows faster development while maintaining sufficient decentralization for everyday applications"
+    }
+  ]
+}

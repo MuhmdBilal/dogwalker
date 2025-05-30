@@ -1,0 +1,398 @@
+@import "../../styles/colors";
+
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+  margin-top: 7rem;
+  padding-bottom: 10rem;
+  background: transparent;
+}
+
+.tracesWrapper {
+  position: absolute;
+  bottom: 21rem;
+  left: 0;
+  z-index: 10;
+  order: 0;
+}
+
+.content {
+  position: relative;
+  z-index: 20;
+  text-align: center;
+}
+
+.title {
+  font-family: "Bogart Trial", serif;
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
+.tagline {
+  font-family: "Bogart Trial", sans-serif;
+  font-weight: 700;
+  color: #ffb94a;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+}
+
+.ctaGroup {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.ctaPrimary,
+.ctaSecondary {
+  padding: 0.75rem 1.5rem;
+  border-radius: 1rem;
+  font-weight: 600;
+  border: none;
+}
+
+.ctaPrimary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #fda518;
+  color: #000;
+  transition: 0.3s background-color;
+
+  &:hover {
+    background-color: darken($main-color, 17%);
+  }
+}
+
+.ctaSecondary {
+  background-color: rgba(#ffb94a33, 0.2);
+  color: $main-color;
+  transition: 0.3s background-color;
+
+  &:hover {
+    background-color: $dark-smooth;
+  }
+}
+
+.dogWalkerBtn,
+.tokenBadge {
+  position: absolute;
+  padding: 1rem 1.2rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  border-radius: 2rem;
+  line-height: 1;
+  border: none;
+  cursor: default;
+  z-index: 8;
+  color: $main-color;
+}
+
+.dogWalkerBtn {
+  background: $dark-smooth;
+  color: #fff;
+  bottom: 2.3rem;
+  left: 4.5rem;
+}
+
+.tokenBadge {
+  background: $white-smooth;
+  color: #000;
+  top: 2.3rem;
+  right: 3.5rem;
+  box-shadow: 0 0 0 1px rgba(#000, 0.06);
+}
+
+.images {
+  width: min(375px, 100%);
+  aspect-ratio: 375 / 412;
+  position: relative;
+  // overflow: hidden;
+  order: -1;
+}
+
+.bg1 {
+  position: absolute;
+  top: 12%;
+  right: 32%;
+  z-index: 1;
+
+  @media (max-width: 376px) {
+    top: 13%;
+    right: 27%;
+  }
+}
+
+.bg2 {
+  position: absolute;
+  top: 22%;
+  right: 17%;
+  z-index: 2;
+
+  @media (max-width: 376px) {
+    top: 22%;
+    right: 15%;
+  }
+}
+
+.dashed {
+  position: absolute;
+  top: 17%;
+  right: 25%;
+  z-index: 5;
+
+  @media (max-width: 376px) {
+    top: 15%;
+    right: 20%;
+  }
+}
+
+.dotted {
+  position: absolute;
+  top: 16%;
+  right: 37%;
+  z-index: 1;
+
+  @media (max-width: 376px) {
+    top: 16%;
+    right: 31%;
+  }
+}
+
+.circle {
+  position: absolute;
+  top: 1%;
+  right: 1%;
+  z-index: 10;
+  overflow: visible;
+}
+
+.vector {
+  position: absolute;
+  top: 15%;
+  right: 25%;
+  z-index: 6;
+  @media (max-width: 376px) {
+    top: 15%;
+    right: 21.5%;
+  }
+}
+
+.phoneTop {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  width: 100%;
+  height: 100%;
+}
+
+.rocket {
+  position: absolute;
+  top: 43%;
+  left: 27%;
+  z-index: 7;
+}
+
+.dogWalkerBtn {
+  position: absolute;
+  bottom: 42%;
+  left: 15%;
+  font-size: 0.9rem;
+  color: $main-color;
+
+  @media (max-width: 376px) {
+    font-size: 0.9rem;
+    bottom: 42%;
+    left: 13%;
+  }
+}
+
+.tokenBadge {
+  top: 29%;
+  right: 20%;
+  font-size: 0.9rem;
+  z-index: 10;
+
+  @media (max-width: 376px) {
+    font-size: 0.9rem;
+    top: 28%;
+    right: 17%;
+  }
+}
+
+.blurCenter {
+  position: absolute;
+  top: 26%;
+  right: 33%;
+  width: 100px;
+  height: 100px;
+  border-radius: 1rem;
+  background: rgba(255, 185, 70, 0.19);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  z-index: 3;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .images {
+    width: min(350px, 100%);
+  }
+}
+
+@media (min-width: 992px) {
+  .hero {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 4rem 2rem;
+    margin-top: 0;
+    top: 2rem;
+  }
+
+  .tracesWrapper {
+    position: absolute;
+    top: 7rem;
+    left: 0;
+    z-index: 10;
+    order: 0;
+  }
+
+  .title {
+    font-size: 3rem;
+  }
+
+  .subtitle {
+    font-size: 1.8rem;
+    strong {
+      font-weight: bold;
+      color: #000;
+    }
+  }
+
+  .tagline {
+    font-size: 2.6rem;
+  }
+
+  .content {
+    max-width: 50%;
+    text-align: left;
+  }
+
+  .images {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 50rem;
+    background: transparent;
+    order: 1;
+  }
+
+  .bg1 {
+    position: absolute;
+    top: 4rem;
+    right: 10rem;
+    z-index: 1;
+  }
+
+  .bg2 {
+    position: absolute;
+    top: 12rem;
+    right: 1rem;
+    z-index: 2;
+  }
+
+  .dashed {
+    position: absolute;
+    top: 8rem;
+    right: 5.5rem;
+    z-index: 5;
+  }
+
+  .dotted {
+    position: absolute;
+    top: 6rem;
+    right: 12.5rem;
+    z-index: 1;
+  }
+
+  .circle {
+    position: absolute;
+    top: -8rem;
+    left: 20rem;
+    z-index: 10;
+  }
+
+  .vector {
+    position: absolute;
+    top: 6rem;
+    right: 4.8rem;
+    z-index: 6;
+  }
+
+  .phoneTop {
+    position: absolute;
+    top: -6rem;
+    left: 2.4rem;
+    z-index: 6;
+
+    transform: none;
+
+    width: 70rem;
+    height: auto;
+  }
+
+  .rocket {
+    position: absolute;
+    top: 28rem;
+    left: 16.2rem;
+    z-index: 7;
+  }
+
+  .dogWalkerBtn {
+    color: $main-color;
+  }
+
+  .dogWalkerBtn {
+    bottom: 9.5rem;
+    left: 10.5rem;
+    font-size: 1.4rem;
+  }
+
+  .tokenBadge {
+    top: 17rem;
+    right: 5rem;
+    font-size: 1.4rem;
+    z-index: 10;
+  }
+
+  .ctaGroup {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: left;
+  }
+
+  .blurCenter {
+    position: absolute;
+    top: 120px;
+    left: 200px;
+    width: 270px;
+    height: 269px;
+    border-radius: 1rem;
+    background: rgba(255, 185, 70, 0.19);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    z-index: 3;
+    pointer-events: none;
+  }
+}

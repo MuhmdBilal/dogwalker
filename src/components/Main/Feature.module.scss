@@ -1,0 +1,241 @@
+@import "../../styles/_colors.scss";
+
+.features {
+  position: relative;
+  padding: 0 1rem;
+  background: $white-smooth;
+  margin-top: 2.4rem;
+
+  .bgWrapper {
+    overflow: hidden;
+
+    .bg {
+      position: absolute;
+      top: 15%;
+      right: 0;
+      z-index: 0;
+    }
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .title {
+    font-size: 2.4rem;
+    font-weight: 700;
+    font-family: "Bogart Trial", serif;
+    span {
+      color: $main-color;
+    }
+  }
+
+  &__box {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    align-items: center;
+
+    @media (min-width: 992px) {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  &__boxOne {
+    flex: 1;
+
+    .sectionTitle {
+      font-family: "Bogart Trial", serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .featureList {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+
+      .featureItem {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #ffb94a1a;
+        padding: 1rem 1.5rem;
+        border-radius: 1rem;
+        font-size: 1.2rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        z-index: 10;
+        color: $main-color;
+        &.active {
+          background: $main-color;
+          color: $dark-smooth;
+        }
+
+        .arrow {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  &__boxTwo {
+    flex: 1;
+    position: relative;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @media (min-width: 992px) {
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 3rem;
+    }
+
+    .phone {
+      margin-bottom: 1.5rem;
+    }
+
+    .phoneHands {
+      margin-left: 2%;
+
+      @media (min-width: 992px) {
+        position: absolute;
+        bottom: -4rem;
+        right: -50%;
+        margin-top: 0;
+        pointer-events: none;
+      }
+    }
+
+    .featureText {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+
+      @media (min-width: 992px) {
+        height: 35rem;
+      }
+
+      .textContent {
+        h4 {
+          font-size: 1.5rem;
+          font-weight: 800;
+          margin-bottom: 0.5rem;
+        }
+
+        p {
+          padding-top: 2rem;
+          font-size: 1.2rem;
+          color: $grey-smooth-2;
+          margin-bottom: 1.5rem;
+        }
+      }
+    }
+  }
+
+  .ellipse1,
+  .ellipse2 {
+    position: absolute;
+    z-index: 10;
+  }
+
+  .ellipse1 {
+    left: -20%;
+    top: -5.6%;
+  }
+
+  .ellipse2 {
+    right: 0;
+    bottom: 1%;
+  }
+}
+
+.storeIcons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1rem;
+
+  a {
+    display: inline-block;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    z-index: 100;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    img {
+      width: 120px;
+      height: auto;
+    }
+  }
+
+  @media (min-width: 992px) {
+    justify-content: flex-start;
+  }
+}
+
+@media (min-width: 992px) {
+  .features {
+    &__boxOne {
+      flex: 0 0 40%;
+      max-width: 40%;
+      .sectionTitle {
+        text-align: left;
+      }
+    }
+
+    &__boxTwo {
+      flex: 0 0 60%;
+      max-width: 60%;
+      .featureText {
+        text-align: left;
+        .textContent {
+          h4 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+          }
+
+          p {
+            font-size: 1.5rem;
+            color: $grey-smooth-2;
+            margin-bottom: 1.5rem;
+          }
+        }
+      }
+    }
+
+    .ellipse1 {
+      top: -40%;
+      left: -20%;
+    }
+
+    .ellipse2 {
+      top: -25%;
+      right: -35%;
+      overflow: hidden;
+    }
+
+    .bgWrapper {
+      .bg {
+        top: 30%;
+        right: -35%;
+        z-index: 0;
+      }
+    }
+  }
+}

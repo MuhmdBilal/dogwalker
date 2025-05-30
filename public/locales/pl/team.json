@@ -1,0 +1,76 @@
+{
+  "heading": "Zespół",
+  "becomeMember": "Zostań członkiem",
+  "members": [
+    {
+      "name": "James Blanco",
+      "role": "Dyrektor generalny",
+      "email": "j.blanco@dogwalker.com",
+      "phone": "+48 351 197 651",
+      "avatar": "/avatars/TeamsImagesJamesBlanco.svg"
+    },
+    {
+      "name": "Angela Farus",
+      "role": "Menedżer społeczności",
+      "email": "a.farus@dogwalker.com",
+      "phone": "+48 351 197 651",
+      "avatar": "/avatars/TeamsImagesAngelaFarus.svg"
+    },
+    {
+      "name": "Jessica Bianco",
+      "role": "Dyrektor generalny",
+      "email": "j.bianco@dogwalker.com",
+      "phone": "+48 351 197 651",
+      "avatar": "/avatars/TeamsImagesJessicaBlanco.svg"
+    },
+    {
+      "name": "Matilda Juni",
+      "role": "Dyrektor generalny",
+      "email": "matilda@dogwalker.com",
+      "phone": "+48 351 197 651",
+      "avatar": "/avatars/TeamsImagesMatildaJuni.svg"
+    },
+    {
+      "name": "Carla Banks",
+      "role": "Dyrektor generalny",
+      "email": "carla.ba@dogwalker.com",
+      "phone": "+48 351 197 651",
+      "avatar": "/avatars/TeamsImagesCarlaBanks.svg"
+    },
+    {
+      "name": "James Blanco",
+      "role": "Dyrektor generalny",
+      "email": "j.blanco@dogwalker.com",
+      "phone": "+48 351 197 651",
+      "avatar": "/avatars/TeamsImagesJamesBlanco.svg"
+    },
+    {
+      "name": "Angela Farus",
+      "role": "Menedżer społeczności",
+      "email": "a.farus@dogwalker.com",
+      "phone": "+48 351 197 651",
+      "avatar": "/avatars/TeamsImagesAngelaFarus.svg"
+    },
+    {
+      "name": "Jessica Bianco",
+      "role": "Dyrektor generalny",
+      "email": "j.bianco@dogwalker.com",
+      "phone": "+48 351 197 651",
+      "avatar": "/avatars/TeamsImagesJessicaBlanco.svg"
+    },
+    {
+      "name": "Matilda Juni",
+      "role": "Dyrektor generalny",
+      "email": "matilda@dogwalker.com",
+      "phone": "+48 351 197 651",
+      "avatar": "/avatars/TeamsImagesMatildaJuni.svg"
+    },
+    {
+      "name": "Carla Banks",
+      "role": "Dyrektor generalny",
+      "email": "carla.ba@dogwalker.com",
+      "phone": "+48 351 197 651",
+      "avatar": "/avatars/TeamsImagesCarlaBanks.svg"
+    }
+  ]
+}

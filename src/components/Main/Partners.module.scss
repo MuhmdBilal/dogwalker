@@ -1,0 +1,58 @@
+@import "../../styles/_colors.scss";
+
+.background {
+  position: relative;
+  overflow: visible;
+  padding: 3rem 1rem 4rem;
+
+  @media (min-width: 992px) {
+    padding-bottom: 10rem;
+  }
+}
+
+.bgWrapper {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 100%;
+  z-index: 1;
+  background: $dark-smooth;
+}
+
+.partners {
+  position: relative;
+  z-index: 2;
+  color: $white-100;
+  padding: 0 1rem;
+  text-align: center;
+
+  .heading {
+    font-size: 2rem;
+    margin-bottom: 2.5rem;
+    color: $main-color;
+    font-family: "Bogart trial", serif;
+  }
+
+  &__box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding-top: 2rem;
+
+    @media (min-width: 992px) {
+      flex-direction: row;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 3rem;
+    }
+  }
+
+  .logoWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

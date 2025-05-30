@@ -1,0 +1,28 @@
+{
+  "invest": {
+    "label": "Invest",
+    "items": {
+      "presale": "Pre-Sale",
+      "staking": "Staking",
+      "refer": "Refer a Friend"
+    }
+  },
+  "about": {
+    "label": "About",
+    "items": {
+      "tokenomics": "Tokenomics",
+      "tokenomicsEcosystem": "Tokenomics & Ecosystem",
+      "roadmap": "Roadmap",
+      "features": "Features"
+    }
+  },
+  "company": {
+    "label": "Company",
+    "items": {
+      "team": "Team",
+      "tech": "Tech",
+      "partners": "Partners",
+      "contact": "Contact"
+    }
+  }
+}

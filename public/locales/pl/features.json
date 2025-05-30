@@ -1,0 +1,33 @@
+{
+  "title": "Wszystko o",
+  "highlight": "Naszej Aplikacji",
+  "sectionTitle": "Funkcje aplikacji",
+  "features": [
+    {
+      "title": "Spacer z psem jednym kliknięciem",
+      "description": "Zamawiasz spacer – w kilka sekund znajdujesz opiekuna w okolicy."
+    },
+    {
+      "title": "Strażnicy reputacji on-chain",
+      "description": "Zweryfikowane opinie i historia spacerów zapisane w blockchainie."
+    },
+    {
+      "title": "Płatność DogWalkerToken (DWT)",
+      "description": "Płać tokenem szybko i bezpiecznie."
+    },
+    {
+      "title": "Misje, rankingi i lojalność",
+      "description": "Zbieraj nagrody i wspinaj się w rankingu."
+    },
+    {
+      "title": "Kalendarz zdrowia i opieki",
+      "description": "Śledź zdrowie, wizyty i pielęgnację zwierzaka."
+    },
+    {
+      "title": "Wsparcie dla schronisk i adopcji",
+      "description": "Wspieraj i łącz się z lokalnymi schroniskami."
+    }
+  ],
+  "appStore": "Pobierz z App Store",
+  "googlePlay": "Pobierz z"
+}

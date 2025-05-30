@@ -1,0 +1,506 @@
+@import "../../styles/colors";
+
+.nav {
+  position: fixed;
+  top: 15rem;
+  right: 0;
+  height: 100vh;
+  width: 100%;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+
+  &__show {
+    top: 0;
+    transform: translateX(0);
+    background: linear-gradient(to bottom, #c0c0c0 20%, $main-color 80%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1700;
+    opacity: 0.9;
+    padding: 1rem;
+  }
+
+  &__container {
+    flex: 1;
+  }
+
+  .menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin: 1rem 0;
+
+      a,
+      .menuItemLabel {
+        color: $white-smooth;
+        text-decoration: none;
+        font-size: 1.8rem;
+        display: block;
+        padding: 0.8rem;
+        cursor: pointer;
+
+        &:hover {
+          color: $main-color;
+        }
+      }
+    }
+
+    .dropdown {
+      list-style: none;
+      padding-left: 1rem;
+
+      li {
+        margin: 0.5rem 0;
+
+        a {
+          font-size: 1.6rem;
+        }
+      }
+    }
+  }
+}
+
+.fullScreenModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+
+  .closeButton {
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+    background: none;
+    border: none;
+    font-size: 4rem;
+    color: $white-smooth;
+    cursor: pointer;
+
+    &:hover {
+      color: $blue-after;
+    }
+  }
+
+  .modalTitle {
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+    color: $white-smooth;
+  }
+
+  .servicesList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+
+    li {
+      margin: 1rem 0;
+      box-shadow: 0.2rem 0.2rem 0.4rem $blue-after;
+      padding: 1rem;
+      font-weight: bold;
+
+      a {
+        font-size: 1.8rem;
+        color: $white-smooth;
+        text-decoration: none;
+
+        &:hover {
+          color: $blue-main;
+        }
+      }
+    }
+  }
+}
+
+.headerMobile {
+  top: 0;
+  width: 100%;
+  padding: 1rem;
+  background: $white-smooth;
+  z-index: 1001;
+  display: flex;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.langWrapper {
+  position: relative;
+  z-index: 2000;
+}
+
+.langDropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: $white-smooth;
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0.5rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 0.4rem;
+  z-index: 2000;
+  li {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    &:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+  }
+}
+
+// ---------- Desktop dropdown ----------
+.menuDesktopItem {
+  position: relative;
+  font-size: 1.6rem;
+  cursor: pointer;
+
+  button {
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.5rem;
+
+    &:hover {
+      color: $primary-color;
+    }
+  }
+
+  .desktopDropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: $white-smooth;
+    border-radius: 0.5rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 0;
+    min-width: 200px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    z-index: 1000;
+
+    li {
+      list-style: none;
+
+      a {
+        display: block;
+        padding: 0.6rem 1.2rem;
+        font-size: 1.4rem;
+        color: $dark-gray;
+        text-decoration: none;
+        transition: background 0.2s, color 0.2s;
+
+        &:hover {
+          background: rgba($primary-color, 0.1);
+          color: $primary-color;
+        }
+      }
+    }
+  }
+
+  &:hover .desktopDropdown,
+  &:focus-within .desktopDropdown {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+}
+
+// ---------- Mobile full-screen modal ----------
+.fullScreenModal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.95);
+  padding: 2rem;
+  animation: fadeIn 0.3s ease-out;
+
+  .closeButton {
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+    font-size: 3rem;
+    color: $white-smooth;
+    transition: color 0.2s;
+    &:hover {
+      color: $primary-color;
+    }
+  }
+
+  .modalTitle {
+    font-size: 2.4rem;
+    margin-bottom: 2rem;
+    color: $white-smooth;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    max-width: 320px;
+
+    li {
+      margin: 0.5rem 0;
+
+      a {
+        display: block;
+        padding: 1rem 1.5rem;
+        background: $white-smooth;
+        border-radius: 0.8rem;
+        text-align: center;
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: $dark-gray;
+        text-decoration: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s, background 0.2s;
+
+        &:hover {
+          transform: translateY(-2px);
+          background: $primary-color;
+          color: $white-smooth;
+        }
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menu {
+  .dropdown {
+    margin-top: 0.5rem;
+    padding-left: 1rem;
+    transition: max-height 0.3s ease;
+    overflow: hidden;
+    max-height: 0;
+
+    &.open {
+      max-height: 500px;
+    }
+
+    li {
+      margin: 0.4rem 0;
+      a {
+        font-size: 1.6rem;
+        padding: 0.6rem;
+        border-radius: 0.5rem;
+        display: block;
+        color: $white-smooth;
+        transition: background 0.2s;
+
+        &:hover {
+          background: rgba($white-smooth, 0.1);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 991px) {
+  .actions {
+    z-index: 100000;
+  }
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    position: relative;
+    z-index: 1500;
+  }
+
+  .header .logo {
+    margin-bottom: 1rem;
+  }
+
+  .header .actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1rem;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .header .actions .menuBtn {
+    display: none;
+  }
+
+  .header .actions .langBtn {
+    padding: 0.77rem 0.8rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    span {
+      font-weight: 500;
+    }
+  }
+
+  .header .actions .walletBtn {
+    padding: 0.7rem 1.2rem;
+    background-color: $main-color;
+    border-radius: 1rem;
+    color: $dark-smooth;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.3s;
+
+    span {
+      margin-left: 0;
+    }
+
+    &:hover {
+      background-color: darken($main-color, 15%);
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .nav {
+    display: none;
+  }
+
+  .header {
+    position: sticky;
+    top: 0;
+    // width: 100%;
+    height: 6.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    background: $white-smooth;
+    z-index: 100;
+
+    &::after {
+      content: "";
+      position: fixed;
+      top: 6.5rem;
+      left: 0;
+      width: 100vw;
+      height: 0.01rem;
+      background: $main-color-2;
+      z-index: 999;
+    }
+  }
+
+  .header .actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 10000;
+
+    .langBtn,
+    .walletBtn,
+    .menuBtn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.3rem;
+      color: $dark-gray;
+      transition: color 0.2s;
+
+      &:hover {
+        color: $primary-color;
+      }
+    }
+
+    .menuBtn {
+      background-color: $dark-smooth;
+      padding: 0.7rem 1.2rem;
+      border-radius: 1rem;
+      position: sticky;
+
+      span {
+        color: $white-smooth;
+        margin-left: 0.8rem;
+      }
+    }
+
+    .langBtn {
+      padding: 0.6rem 0.8rem;
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 1rem;
+
+      span {
+        font-weight: 500;
+      }
+    }
+
+    .walletBtn {
+      padding: 0.7rem 1.2rem;
+      background-color: $main-color;
+      border-radius: 1rem;
+      color: $dark-smooth;
+      font-weight: bold;
+      transition: 0.3s background-color;
+
+      span {
+        margin-left: 0.4rem;
+      }
+
+      &:hover {
+        background-color: darken($main-color, 15%);
+      }
+    }
+  }
+
+  .desktopMenu {
+    position: sticky;
+    top: 5.5rem;
+    width: 100%;
+    background: $white-smooth;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  .menuDesktop {
+    display: flex;
+    justify-content: right;
+    gap: 2rem;
+    list-style: none;
+    padding: 2rem;
+    z-index: 1000;
+  }
+  .menuDesktopItem {
+    position: sticky;
+    font-size: 1.6rem;
+    cursor: pointer;
+    z-index: 1000;
+  }
+}

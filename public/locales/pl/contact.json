@@ -1,0 +1,38 @@
+{
+  "getHelpLabel": "Uzyskaj pomoc",
+  "faqHeading": "Najczęściej zadawane pytania",
+  "faqDescription": "Znajdź szybkie odpowiedzi na najczęstsze pytania dotyczące naszej strony, produktów i usług.<br/>Skontaktuj się z nami bezpośrednio w sprawie pytań, uwag lub zgłoszeń wsparcia.<br/><br/>Jeśli potrzebujesz pomocy, prosimy o kontakt.",
+  "questions": [
+    {
+      "question": "Co to jest tokenizacja?",
+      "answer": "Tokenizacja to proces przekształcania danych w unikalne tokeny, które mogą zastępować wrażliwe informacje w systemach."
+    },
+    {
+      "question": "Jakie są korzyści tokenizacji?",
+      "answer": "Tokenizacja zabezpiecza dane, zmniejsza ryzyko oszustw i zapewnia zgodność z przepisami o ochronie prywatności."
+    },
+    {
+      "question": "Jak działa tokenizacja?",
+      "answer": "Podczas tokenizacji oryginalne dane są przechowywane bezpiecznie, a w aplikacjach i transakcjach używa się zamiast nich tokenów."
+    },
+    {
+      "question": "Czy tokenizacja jest bezpieczna?",
+      "answer": "Tak — tokeny nie mają wartości poza bezpiecznym miejscem, w którym są mapowane do oryginalnych danych, co znacznie zmniejsza ryzyko wycieku."
+    },
+    {
+      "question": "Gdzie można stosować tokenizację?",
+      "answer": "Tokenizacja jest szeroko stosowana w przetwarzaniu płatności, w ochronie danych medycznych i wszędzie tam, gdzie występuje PII (dane osobowe)."
+    },
+    {
+      "question": "Czy tokeny są powiązane z danymi źródłowymi?",
+      "answer": "Nie — same tokeny nie zawierają wartości ani znaczenia i nie można ich odwrócić bez dostępu do bezpiecznego magazynu tokenów."
+    }
+  ],
+  "formHeading": "Nie znalazłeś odpowiedzi na swoje pytanie?",
+  "formDescription": "Nie martw się, skorzystaj z naszego formularza. Nasz zespół postara się odpowiedzieć w ciągu 24 godzin.",
+  "namePlaceholder": "Imię…",
+  "emailPlaceholder": "Adres e-mail…",
+  "subjectPlaceholder": "Temat…",
+  "messagePlaceholder": "Wpisz wiadomość…",
+  "submitCTA": "Wyślij"
+}

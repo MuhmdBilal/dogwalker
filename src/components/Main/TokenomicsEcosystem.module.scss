@@ -1,0 +1,122 @@
+@import "../../styles/_colors.scss";
+
+.ecoBackground {
+  position: relative;
+  margin-top: -60rem;
+  padding-top: 60rem;
+  overflow: visible;
+  margin-bottom: 40rem;
+
+  @media (min-width: 992px) {
+    margin-bottom: 40rem;
+  }
+}
+
+.bgWrapper {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: calc(100% + 40rem);
+  z-index: 1;
+
+  .bg {
+    object-fit: cover;
+  }
+}
+
+.eco {
+  position: relative;
+  z-index: 2;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem 1rem;
+
+    @media (min-width: 992px) {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 4rem;
+      padding: 4rem 2rem;
+    }
+  }
+
+  .text {
+    flex: 2;
+    color: $dark-smooth;
+    text-align: center;
+
+    @media (min-width: 992px) {
+      text-align: left;
+    }
+
+    .label {
+      font-size: 1rem;
+      font-weight: 600;
+      color: $main-color;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+
+      @media (min-width: 992px) {
+        font-size: 1.4rem;
+      }
+    }
+
+    .heading {
+      font-family: "Bogart Trial", serif;
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 0 0 1rem;
+      color: $black-100;
+
+      @media (min-width: 992px) {
+        font-size: 3rem;
+      }
+    }
+
+    .description {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      padding: 0 0.5rem;
+
+      @media (min-width: 992px) {
+        font-size: 1.8rem;
+      }
+    }
+
+    .subheading {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      @media (min-width: 992px) {
+        font-size: 1.5rem;
+      }
+    }
+
+    .list {
+      list-style: disc inside;
+      margin: 0;
+      padding: 0;
+
+      li {
+        margin-bottom: 0.5rem;
+        font-size: 1.2rem;
+        @media (min-width: 992px) {
+          font-size: 1.3rem;
+        }
+      }
+    }
+  }
+
+  .imageWrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

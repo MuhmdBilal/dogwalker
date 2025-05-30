@@ -1,0 +1,40 @@
+{
+  "name": "dog_walker",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@reown/appkit": "^1.7.7",
+    "@reown/appkit-adapter-wagmi": "^1.7.7",
+    "@tanstack/react-query": "^5.79.0",
+    "hamburgers": "^1.2.1",
+    "i18next": "^25.2.0",
+    "i18next-browser-languagedetector": "^8.1.0",
+    "next": "15.3.2",
+    "next-i18next": "^15.4.2",
+    "next-intl": "^4.1.0",
+    "nodemailer": "^7.0.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-i18next": "^15.5.1",
+    "react-slick": "^0.30.3",
+    "sass": "^1.89.0",
+    "slick-carousel": "^1.8.1",
+    "viem": "^2.30.5",
+    "wagmi": "^2.15.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/react-slick": "^0.23.13",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

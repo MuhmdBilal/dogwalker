@@ -1,0 +1,162 @@
+@import "../../styles/colors";
+
+.hamburger {
+  padding: 15px 15px;
+  transition: background-color 0.5s ease;
+  cursor: pointer;
+  transition-property: opacity, filter;
+  transition-duration: 0.15s;
+  transition-timing-function: linear;
+  font: inherit;
+  text-transform: none;
+  background-color: transparent;
+  border: 0;
+  margin: 0;
+  overflow: visible;
+}
+
+.hamburgerContainer {
+  position: fixed;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  top: 4rem;
+  right: 1rem;
+  height: 19rem;
+  z-index: 1800;
+}
+
+.hamburger:hover,
+.hamburger.isActive:hover {
+  opacity: 0.7;
+}
+
+.hamburger.isActive .hamburgerInner,
+.hamburger.isActive .hamburgerInner::before,
+.hamburger.isActive .hamburgerInner::after {
+  background-color: $dark-smooth;
+}
+
+.hamburgerBox {
+  width: 40px;
+  height: 24px;
+  display: inline-block;
+  position: relative;
+  transform: scale(0.7);
+}
+
+.hamburgerInner,
+.hamburgerInner::before,
+.hamburgerInner::after {
+  position: absolute;
+  left: 0;
+  height: 4px;
+  background-color: $main-color;
+  border-radius: 4px;
+  transition: transform 0.15s ease, width 0.15s ease;
+}
+
+.hamburgerInner {
+  width: 40px;
+  top: 50%;
+  margin-top: -2px;
+}
+
+.hamburgerInner::before {
+  content: "";
+  width: 40px;
+  top: -10px;
+}
+
+.hamburgerInner::after {
+  content: "";
+  width: 20px;
+  top: 10px;
+}
+
+// ---------- Arrow transform on active ----------
+.hamburger.isActive .hamburgerInner {
+  background-color: transparent !important;
+}
+
+.hamburger.isActive .hamburgerInner::before {
+  transform: translateX(-8px) rotate(-45deg);
+  width: 40px;
+}
+
+.hamburger.isActive .hamburgerInner::after {
+  transform: translateX(-8px) rotate(45deg);
+  width: 40px;
+}
+
+// ---------- Spring variant (preserved) ----------
+.hamburger__spring .hamburgerInner {
+  top: 2px;
+  transition: background-color 0s 0.13s linear;
+}
+.hamburger__spring .hamburgerInner::before {
+  top: 10px;
+  transition: top 0.1s 0.2s cubic-bezier(0.33333, 0.66667, 0.66667, 1),
+    transform 0.13s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
+.hamburger__spring .hamburgerInner::after {
+  top: 20px;
+  transition: top 0.2s 0.2s cubic-bezier(0.33333, 0.66667, 0.66667, 1),
+    transform 0.13s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
+
+.hamburger__spring.isActive .hamburgerInner {
+  transition-delay: 0.22s;
+  background-color: transparent !important;
+}
+.hamburger__spring.isActive .hamburgerInner::before {
+  top: 0;
+  transition: top 0.1s 0.15s cubic-bezier(0.33333, 0, 0.66667, 0.33333),
+    transform 0.13s 0.22s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transform: translate3d(0, 10px, 0) rotate(45deg);
+}
+.hamburger__spring.isActive .hamburgerInner::after {
+  top: 0;
+  transition: top 0.2s cubic-bezier(0.33333, 0, 0.66667, 0.33333),
+    transform 0.13s 0.22s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transform: translate3d(0, 10px, 0) rotate(-45deg);
+}
+
+.spin {
+  transform-origin: center;
+  transform: rotate(180deg);
+  transition: transform 0.3s ease-in-out;
+}
+
+.shopButton {
+  top: 1rem;
+  right: 4rem;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  display: flex;
+  left: 2rem;
+}
+
+.hamburger.scrolled .hamburgerInner {
+  background-color: $blue-main;
+}
+
+.hamburger.scrolled .hamburgerInner::before,
+.hamburger.scrolled .hamburgerInner::after {
+  background-color: $blue-main;
+}
+
+@media only screen and (min-width: 992px) {
+  .hamburger {
+    display: none;
+  }
+
+  .hamburgerContainer {
+    height: auto;
+  }
+}

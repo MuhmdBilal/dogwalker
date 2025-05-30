@@ -1,0 +1,335 @@
+@import "../../styles/_colors.scss";
+
+.background {
+  position: relative;
+  overflow: visible;
+
+  .circleWrapper {
+    position: absolute;
+    bottom: -12%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    height: 40rem;
+    pointer-events: none;
+    z-index: 20;
+  }
+}
+
+.bgWrapper {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 100%;
+  z-index: 1;
+
+  .bg {
+    object-fit: cover;
+  }
+}
+
+.staking {
+  position: relative;
+  height: 100%;
+  padding: 1.2rem;
+  z-index: 2;
+  padding-top: 8rem;
+  padding-bottom: 6rem;
+
+  .ellipse {
+    position: absolute;
+    bottom: 20rem;
+    left: 10rem;
+    width: 25rem;
+    pointer-events: none;
+    z-index: 0;
+
+    &Two {
+      position: absolute;
+      width: 25rem;
+      top: 1rem;
+      right: 1rem;
+      z-index: 0;
+    }
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 2rem;
+
+    .heading {
+      font-family: "Bogart Trial", serif;
+      font-size: 2rem;
+      font-weight: bold;
+      color: $white-smooth;
+    }
+
+    .howItWorks {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.5rem;
+      background: #ffb94a33;
+      color: $main-color;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 1.2rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      z-index: 100;
+
+      &:hover {
+        background: #ffe6cc;
+      }
+
+      .arrow {
+        display: inline-block;
+        font-size: 1rem;
+        transform: translateY(1px);
+      }
+    }
+  }
+
+  .rectangle,
+  .rectangleSecond {
+    position: absolute;
+    right: 0;
+
+    transform: translateY(-80%);
+  }
+  .rectangle {
+    top: 1rem;
+    left: 8rem;
+    z-index: 10;
+    backdrop-filter: blur(2px);
+    z-index: 100;
+  }
+  .rectangleSecond {
+    top: 1rem;
+    left: 0;
+    z-index: 20;
+    backdrop-filter: blur(3px);
+    border-radius: 50%;
+  }
+
+  &__supplyFlex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 3rem;
+
+    @media (min-width: 992px) {
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: center;
+    }
+  }
+
+  &__supply {
+    display: inline-block;
+    margin-top: 3rem;
+    padding: 1rem;
+    background: rgba(rgba($grey-smooth, 0.9), 0.1);
+    border-radius: 1.5rem;
+    text-align: left;
+    display: inline-block;
+
+    /* etykieta “Total Supply” */
+    &Label {
+      padding: 0.5rem;
+      font-weight: 600;
+      color: rgba($white-smooth, 0.9);
+      margin-bottom: 1rem;
+    }
+
+    /* kontener na wykres */
+    &Inside {
+      padding: 0.5rem;
+      // background: $white-smooth-2;
+      border-radius: 1rem;
+      display: inline-block;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+      img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+      }
+    }
+  }
+
+  &__dogLock {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media (min-width: 992px) {
+      margin-top: 2.9rem;
+      margin-left: 2rem;
+    }
+  }
+
+  &__box {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    position: relative;
+    z-index: 2;
+
+    .card {
+      background: rgba($dark-smooth, 0.1);
+      border-radius: 20px;
+      padding: 1.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      height: 250px;
+      box-shadow: $card-shadow;
+
+      .label {
+        font-size: 1.4rem;
+        color: rgba($white-smooth, 0.9);
+      }
+
+      .value {
+        font-size: 1.9rem;
+        font-weight: 600;
+        color: $main-color;
+
+        small {
+          display: block;
+          font-size: 1.4rem;
+          color: rgba($main-color, 0.6);
+          margin-top: 4px;
+        }
+      }
+
+      .notes {
+        list-style-type: disc;
+        padding: 0.5rem;
+        margin-top: auto;
+        margin-left: 0.4rem;
+
+        li {
+          font-size: 1.1rem;
+          color: rgba($main-color, 0.8);
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+
+      .logoWrapper {
+        margin-top: auto;
+        text-align: center;
+
+        img {
+          height: auto;
+          z-index: 100;
+        }
+      }
+
+      .cta {
+        margin-top: auto;
+        background: rgba($gold-main, 0.1);
+        color: $gold-main;
+        border: none;
+        border-radius: 1.4rem;
+        padding: 1rem 1.2rem;
+        font-size: 1.4rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        cursor: pointer;
+        transition: background 0.2s;
+
+        &:hover {
+          background: rgba($gold-main, 0.2);
+        }
+        &Claim {
+          margin-top: auto;
+          padding: 1rem 1rem;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          background: rgba(#81d84b, 0.09);
+          color: #81d84b;
+          cursor: pointer;
+          border-radius: 2rem;
+          transition: background 0.2s;
+          &:hover {
+            background: darken(#81d84b, 45%);
+          }
+
+          img {
+            margin-left: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .background {
+    .circleWrapper {
+      position: absolute;
+      bottom: -8%;
+      left: 50%;
+      transform: translateX(-47%);
+      width: 100vw;
+      height: 41rem;
+      pointer-events: none;
+      z-index: 20;
+    }
+  }
+  .staking {
+    .header {
+      justify-content: flex-start;
+      gap: 2rem;
+    }
+    &__box {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      z-index: 100;
+
+      .card {
+        .cta {
+          &Claim {
+            padding: 0.6rem 0.6rem;
+          }
+        }
+      }
+    }
+    .ellipse,
+    .ellipse {
+      position: absolute;
+      bottom: 15rem;
+      left: calc((1200px - 100vw) / 2);
+      width: 100%;
+      z-index: 20;
+    }
+
+    .ellipseTwo {
+      position: absolute;
+      top: -10rem;
+      // bottom: auto;
+      right: calc((1200px - 100vw) / 2);
+      width: 100%;
+    }
+
+    .rectangle {
+      left: 7.6rem;
+    }
+
+    .rectangleSecond {
+      top: 5rem;
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "label": "Model wzrostu ceny tokena",
+  "subtitle": "10 rund ICO + 20% w każdej rundzie",
+  "verticalLabel": "MODEL WZROSTU CENY",
+  "headers": {
+    "round": "Runda",
+    "price": "Cena DWT (USD)",
+    "increase": "Wzrost w stos. do poprzedniej",
+    "allocation": "Procent alokacji",
+    "capital": "Zebrany kapitał (pełna alokacja)"
+  },
+  "row": {
+    "round": "Runda {{round}}"
+  },
+  "footer": {
+    "allocationLabel": "Razem",
+    "capitalTotal": "~9.66 mln USD\n(9 mln EUR)",
+    "capitalTotalEur": "(9 mln EUR) "
+  },
+  "alts": {
+    "background": "Wzór tła sekcji wzrostu ceny",
+    "rectangle1": "Dekoracyjny prostokąt 1",
+    "rectangle2": "Dekoracyjny prostokąt 2",
+    "rectangle3": "Dekoracyjny prostokąt 3",
+    "rectangle4": "Dekoracyjny prostokąt 4",
+    "dogIcon": "Ikona psa dekoracyjna",
+    "rocketIcon": "Ikona rakiety dekoracyjna",
+    "dogTraces": "Ślady psa dekoracyjne"
+  }
+}

@@ -1,0 +1,9 @@
+.ellipseWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 50rem;
+  height: auto;
+  z-index: 1000;
+  pointer-events: none;
+}
