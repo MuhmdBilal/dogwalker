@@ -139,7 +139,8 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
       }
     } catch (error:any) {
       console.error("Transaction failed:", error);
-      toast.error(error);
+      alert(error)
+      toast.error("Transaction failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
