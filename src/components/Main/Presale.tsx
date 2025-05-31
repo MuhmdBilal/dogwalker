@@ -15,11 +15,69 @@ import Ellipse2 from "@/assets/img/Ellipse 4.svg";
 import PreSaleArrow from "@/assets/img/PresaleArrow.svg";
 import PreSaleRectangleRight from "@/assets/img/PreSaleRectangleRight.svg";
 import PreSaleRectangleRightTwo from "@/assets/img/PreSaleRectangleRightTwo.svg";
-
+import { useAccount } from "wagmi";
+import PurchaseModal from "../More/purchaseModal";
+import { toast } from "react-toastify";
+import { getICOContract, getWeb3 } from "@/utils/web3";
 const Presale: React.FC = () => {
   const { t } = useTranslation("presale");
-
   const [isMobile, setIsMobile] = useState(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const { isConnected, address } = useAccount();
+  const [ico, setIco] = useState<any>(null);
+  const [web3, setWeb3] = useState<any>(null);
+  const [icoRemaining, setIcoRemaining] = useState<any>(0);
+  const [currentPriceData, setCurrentPriceData] = useState<any>(0);
+  const [tokensSoldData, setTokensSoldData] = useState<any>(0);
+  const [percentageRaised, setPercentageRaised] = useState<any>(0);
+  useEffect(() => {
+    const loadContracts = async () => {
+      const ico = await getICOContract();
+      const web3 = await getWeb3();
+      setIco(ico);
+      setWeb3(web3);
+    };
+    loadContracts();
+  }, []);
+
+  const getValue = async () => {
+    try {
+      const icoRemaining = await ico.methods.icoRemaining().call();
+      const icoRemainingFromWei = web3.utils.fromWei(
+        Number(icoRemaining),
+        "ether"
+      );
+      setIcoRemaining(icoRemainingFromWei);
+      const getCurrentPrice = await ico.methods.getCurrentPrice().call();
+      const getCurrentPriceFromWei = web3.utils.fromWei(
+        Number(getCurrentPrice),
+        "ether"
+      );
+      setCurrentPriceData(getCurrentPriceFromWei);
+      const tokensSold = await ico.methods.tokensSold().call();
+      const tokensSoldFromWei = web3.utils.fromWei(Number(tokensSold), "ether");
+      setTokensSoldData(tokensSoldFromWei);
+      const totalRaisedUSD = await ico.methods.totalRaisedUSD().call();
+      const totalRaisedUSDFromWei = web3.utils.fromWei(
+        Number(totalRaisedUSD),
+        "ether"
+      );
+      const maxPaise = await ico.methods.MAX_RAISE().call();
+      const maxPaiseFromWei = web3.utils.fromWei(Number(maxPaise), "ether");
+      const percentageRaised =
+        maxPaiseFromWei > 0
+          ? Math.min((totalRaisedUSDFromWei / maxPaiseFromWei) * 100, 100)
+          : 0;
+      setPercentageRaised(percentageRaised);
+    } catch (e) {
+      console.log("e", e);
+    }
+  };
+  useEffect(() => {
+    if (ico) {
+      getValue();
+    }
+  }, [ico]);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 992);
@@ -90,7 +148,9 @@ const Presale: React.FC = () => {
           <div className={classes.presale__boxOne}>
             <div className={classes.priceBox}>
               <span className={classes.label}>{t("launchPriceLabel")}</span>
-              <span className={classes.price}>{t("price")}</span>
+              <span className={classes.price}>
+                {t("price")} {currentPriceData}$
+              </span>
               <span className={classes.listing}>
                 {t("listingPriceLabel")}:{t("listingPrice")}
               </span>
@@ -110,15 +170,20 @@ const Presale: React.FC = () => {
           <div className={classes.presale__boxThree}>
             <div className={classes.progress}>
               <div className={classes.bar}>
-                <div className={classes.filled} style={{ width: "20%" }} />
-                <span className={classes.percentage}>10%</span>
+                <div
+                  className={classes.filled}
+                  style={{ width: `${percentageRaised}%` }}
+                />
+                <span className={classes.percentage}>
+                  {percentageRaised.toFixed(2)}%
+                </span>
               </div>
               <div className={classes.infoRow}>
                 <span className={classes.sold}>
-                  {t("soldLabel")} {t("soldAmount")}
+                  {t("soldLabel")} {tokensSoldData} DWT
                 </span>
                 <span className={classes.total}>
-                  {t("totalLabel")} {t("totalAmount")}
+                  {t("totalLabel")} {Number(icoRemaining).toFixed(2)}
                 </span>
               </div>
             </div>
@@ -157,7 +222,16 @@ const Presale: React.FC = () => {
           </div>
 
           <div className={classes.presale__boxFive}>
-            <button className={classes.cta}>
+            <button
+              className={classes.cta}
+              onClick={() => {
+                if (isConnected) {
+                  setShowModal(true);
+                } else {
+                  toast.error("Please wellet connect first!");
+                }
+              }}
+            >
               <span> {t("purchaseCTA")}</span>
             </button>
           </div>
@@ -178,6 +252,12 @@ const Presale: React.FC = () => {
           </p>
         </div>
       </section>
+      <PurchaseModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        setShowModal={setShowModal}
+        detailValue={getValue}
+      />
     </div>
   );
 };

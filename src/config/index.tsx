@@ -1,27 +1,47 @@
-
 // config/index.tsx
 
-import { cookieStorage, createStorage, http } from '@wagmi/core'
-import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
-import { mainnet, arbitrum } from '@reown/appkit/networks'
+import { cookieStorage, createStorage, http } from "@wagmi/core";
+import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
+import type { Chain } from "wagmi/chains"; // ✅ Correct import
 
-// Get projectId from https://cloud.reown.com
-export const projectId = 'b393768fdcb069b24001e1a01b396221'
+// Define BSC Testnet
+export const bscTestnet: Chain = {
+  id: 97,
+  name: "Binance Smart Chain Testnet",
+  // network: 'bsc-testnet',
+  nativeCurrency: {
+    name: "Binance Chain Native Token",
+    symbol: "tBNB",
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: { http: ["https://data-seed-prebsc-1-s1.binance.org:8545"] },
+    public: { http: ["https://data-seed-prebsc-1-s1.binance.org:8545"] },
+  },
+  blockExplorers: {
+    default: {
+      name: "BscScan",
+      url: "https://testnet.bscscan.com",
+    },
+  },
+  testnet: true,
+};
+
+export const projectId = "b393768fdcb069b24001e1a01b396221";
 
 if (!projectId) {
-  throw new Error('Project ID is not defined')
+  throw new Error("Project ID is not defined");
 }
 
-export const networks = [mainnet, arbitrum]
+export const networks = [bscTestnet];
 
-//Set up the Wagmi Adapter (Config)
 export const wagmiAdapter = new WagmiAdapter({
   storage: createStorage({
-    storage: cookieStorage
+    storage: cookieStorage,
   }),
   ssr: true,
   projectId,
-  networks
-})
+  networks,
+});
 
-export const config = wagmiAdapter.wagmiConfig
+export const config = wagmiAdapter.wagmiConfig;
