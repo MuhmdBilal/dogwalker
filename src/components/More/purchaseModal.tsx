@@ -137,9 +137,9 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
       } else if (asset == 2) {
         await handleTokenPurchase(usdtContract, weiValue);
       }
-    } catch (error) {
+    } catch (error:any) {
       console.error("Transaction failed:", error);
-      toast.error("Transaction failed. Please try again.");
+      toast.error(error);
     } finally {
       setIsLoading(false);
     }
