@@ -8,6 +8,7 @@ import {
   getUSDCContract,
   getUSDTContract,
   getWeb3,
+  openInMetaMaskMobile,
 } from "@/utils/web3";
 import { icoAddress } from "@/contract/ico";
 
@@ -117,6 +118,19 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
   };
   const handleWrite = async () => {
     try {
+      const web3 = await getWeb3();
+    
+    // Check if we're using fallback (no wallet connected)
+    if (!(window as any).ethereum?.isConnected?.()) {
+      // Mobile-specific handling
+      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        openInMetaMaskMobile();
+        return;
+      } else {
+        toast.error('Please connect MetaMask first');
+        return;
+      }
+    }
       if (!dwtAmount) {
         setError(true);
         return;
