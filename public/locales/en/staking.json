@@ -6,12 +6,12 @@
   "purchaseBalanceCTA": "Purchase Balance",
   "percentOfPoolLabel": "% of Pool",
   "totalStakedLabel": "Total Staked",
-  "withdrawTokensCTA": "Withdraw Tokens",
+  "withdrawTokensCTA": "Unstake Token",
   "estimatedRewardsLabel": "Estimated Rewards",
   "rewardsRateDynamic": "Rewards rate is dynamic",
-  "monthlyNote": "Monthly = Rewards % / 12",
-  "dailyNote": "Daily = Rewards % / 365",
-  "currentRewardsLabel": "Current Rewards",
+  "monthlyNote": "Monthly =",
+  "dailyNote": "Daily = ",
+  "currentRewardsLabel": "Rewards Pool",
   "totalRewardsLabel": "Total Rewards",
   "claimRewardsCTA": "Claim Rewards",
   "totalSupplyLabel": "Total Supply",
@@ -22,5 +22,6 @@
   "estimatedRewardsRate": "122% p/a",
   "currentRewardsAmount": "4377.4",
   "perEthBlockLabel": "per ETH Block",
-  "totalRewardsAmount": "0 DTW"
+  "totalRewardsAmount": "0 DTW",
+  "reward" : "Rewards"
 }

@@ -15,5 +15,6 @@
   "secs": "Sek.",
   "until": "Do startu przedsprzedaży",
   "purchaseCTA": "Kup Token DogWalker",
-  "poweredPrefix": "Napędzane i wspierane przez"
+  "poweredPrefix": "Napędzane i wspierane przez",
+  "currentRound" : "Bieżąca runda"
 }

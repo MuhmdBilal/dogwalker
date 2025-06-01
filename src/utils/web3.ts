@@ -1,6 +1,9 @@
 import { icoAbi, icoAddress } from "@/contract/ico";
 import { usdcAbi, usdcAddress } from "@/contract/usdc";
 import { usdtAbi, usdtAddress } from "@/contract/usdt";
+import  {dwtTokenAbi,dwtTokenAddress} from "@/contract/dwtToken"
+import { stakingAbi, stakingAddress } from "@/contract/staking";
+import Web3 from "web3";
 // import Web3 from 'web3';
 
 // // ✅ BSC Testnet RPC
@@ -23,7 +26,7 @@ import { usdtAbi, usdtAddress } from "@/contract/usdt";
 //   web3Instance = new Web3(new Web3.providers.HttpProvider(fallbackRPC));
 //   return web3Instance;
 // };
-import Web3 from "web3";
+
 
 // ✅ BSC Testnet RPC
 const fallbackRPC = "https://data-seed-prebsc-1-s1.binance.org:8545/";
@@ -89,4 +92,15 @@ export const getUSDTContract = async (): Promise<any | null> => {
   const web3 = await getWeb3();
   if (!web3) return null;
   return new web3.eth.Contract(usdtAbi as any, usdtAddress);
+};
+
+export const getDwtToken = async (): Promise<any | null> => {
+  const web3 = await getWeb3();
+  if (!web3) return null;
+  return new web3.eth.Contract(dwtTokenAbi as any, dwtTokenAddress);
+};
+export const getStaking = async (): Promise<any | null> => {
+  const web3 = await getWeb3();
+  if (!web3) return null;
+  return new web3.eth.Contract(stakingAbi as any, stakingAddress);
 };

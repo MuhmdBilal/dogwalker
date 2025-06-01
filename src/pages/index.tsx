@@ -1,3 +1,4 @@
+"use client";
 import Footer from "@/components/Footer/Footer";
 import Contact from "@/components/Main/Contact";
 import Features from "@/components/Main/Features";
@@ -13,6 +14,7 @@ import Tech from "@/components/Main/Tech";
 import Tokenomics from "@/components/Main/Tokenomics";
 import TokenomicsEcosystem from "@/components/Main/TokenomicsEcosystem";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useState } from "react";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
@@ -40,14 +42,30 @@ export async function getStaticProps({ locale }: { locale: string }) {
 }
 
 export default function Home() {
+  const [hasMinimumPurchased, setHasMinimumPurchased] =
+    useState<boolean>(false);
+  const [balanceOf, setBalanceOf] = useState(0);
+  const [referAddres, setReferAddress] = useState("");
+  const [userSpendUsdc, setUserSpendUsdc] = useState("");
   return (
     <div>
       <div className="container">
         <Hero />
       </div>
-      <Presale />
-      <Staking />
-      <ReferAFriend />
+      <Presale
+        setHasMinimumPurchased={setHasMinimumPurchased}
+        setBalanceOf={setBalanceOf}
+        setReferAddress={setReferAddress}
+        referAddres={referAddres}
+        setUserSpendUsdc={setUserSpendUsdc}
+      />
+      <Staking
+        setHasMinimumPurchased={setHasMinimumPurchased}
+        hasMinimumPurchased={hasMinimumPurchased}
+        setBalanceOf={setBalanceOf}
+        balanceOf={balanceOf}
+      />
+      <ReferAFriend referAddres={userSpendUsdc} />
       <Tokenomics />
       <TokenomicsEcosystem />
       <PriceGrowth />

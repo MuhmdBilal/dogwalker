@@ -15,5 +15,7 @@
   "secs": "Secs",
   "until": "Until pre-sale launch",
   "purchaseCTA": "Purchase DogWalker Token",
-  "poweredPrefix": "Powered & Supported by"
+  "poweredPrefix": "Powered & Supported by",
+  "currentRound" : "Current Round"
+
 }

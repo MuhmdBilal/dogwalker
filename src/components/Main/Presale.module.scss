@@ -121,7 +121,6 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-
     .priceBox {
       background: url("/assets/img/PreSaleRectangle.svg") no-repeat center
         center;
@@ -375,7 +374,7 @@
 
     &__box {
       display: grid;
-      grid-template-columns: 4fr 2fr;
+      grid-template-columns: 2fr;
       grid-template-rows: auto auto;
       gap: 2rem;
       align-items: start;
@@ -492,4 +491,18 @@
       top: 5rem;
     }
   }
+}
+
+.mainDIv {
+  display: grid;
+  grid-template-columns: 4fr 2fr;
+  grid-template-rows: auto auto;
+  gap: 2rem;
+  align-items: start;
+}
+
+.currentRound{
+  color: #ffb400;
+  font-size: 32px;
+  font-weight: 800;
 }

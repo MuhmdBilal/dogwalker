@@ -6,12 +6,39 @@ import classes from "./ReferAFriend.module.scss";
 import ReferAFriendDogImage from "@/assets/img/ReferAFriendDogImage.svg";
 import ReferAFriendRectangle1 from "@/assets/img/ReferAFriendRectangle1.svg";
 import ReferAFriendRectangle2 from "@/assets/img/ReferAFriendRectangle2.svg";
-
-const ReferAFriend = () => {
+import { useAccount } from "wagmi";
+const ReferAFriend = ({ referAddres }: any) => {
   const { t } = useTranslation("refer");
-
+  const [url, setUrl] = useState("");
+  const { address } = useAccount();
+const [copied, setCopied] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [generateAddress, setGenerateAddress] = useState("");
+  const handleGenerate = async () => {
+    setGenerateAddress(`${url}?referr-address=${address}`);
+  };
+  
 
+const handleCopy = async () => {
+  if (!generateAddress) return;
+
+  try {
+    await navigator.clipboard.writeText(generateAddress);
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 1000);
+  } catch (err) {
+    console.error("Failed to copy:", err);
+  }
+};
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const { protocol, host } = window.location;
+      setUrl(`${protocol}//${host}`);
+    }
+  }, []);
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 992);
     checkMobile();
@@ -46,10 +73,21 @@ const ReferAFriend = () => {
                 readOnly
                 placeholder={t("inputPlaceholder")}
                 className={classes.input}
+                value={generateAddress}
               />
-              <button className={classes.copyBtn}>{t("copyCTA")}</button>
+              <button
+                className={classes.copyBtn}
+                onClick={handleCopy}
+                disabled={!generateAddress}
+              >
+               {copied ? t("copiedText") : t("copyCTA")}
+              </button>
             </div>
-            <button className={classes.generateBtn}>{t("generateCTA")}</button>
+            {referAddres > 0 && (
+              <button className={classes.generateBtn} onClick={handleGenerate}>
+                {t("generateCTA")}
+              </button>
+            )}
           </div>
         </div>
 

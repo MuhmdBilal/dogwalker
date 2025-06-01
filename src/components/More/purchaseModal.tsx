@@ -5,18 +5,21 @@ import { useAccount } from "wagmi";
 import { toast } from "react-toastify";
 import {
   getICOContract,
+  getStaking,
   getUSDCContract,
   getUSDTContract,
   getWeb3,
   openInMetaMaskMobile,
 } from "@/utils/web3";
 import { icoAddress } from "@/contract/ico";
-
+import { useRouter } from "next/router";
 interface PurchaseModalProps {
   isOpen: boolean;
   onClose: () => void;
   setShowModal: any;
   detailValue: any;
+  getValueByAddress: any;
+  referAddres: any;
 }
 
 const PurchaseModal: React.FC<PurchaseModalProps> = ({
@@ -24,11 +27,13 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
   onClose,
   setShowModal,
   detailValue,
+  getValueByAddress,
+  referAddres,
 }) => {
   const [asset, setAsset] = useState<any>("");
   const [hash, setHash] = useState<any>(null);
   const [dwtAmount, setDwtAmount] = useState("");
-  const [referrerAddress, setReferrerAddress] = useState("");
+  const [referrerAddress, setReferrerAddress] = useState<any>("");
   const { isConnected, address } = useAccount();
   const [usdcContract, setUsdcContract] = useState<any>(null);
   const [usdtContract, setUsdtContract] = useState<any>(null);
@@ -39,7 +44,17 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
   const [ownerAddress, setOwnerAddress] = useState<any>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
+  const router = useRouter();
 
+  useEffect(() => {
+    if (router.isReady) {
+      const referrerAddress = router.query["referr-address"];
+      if (referrerAddress) {
+        setReferrerAddress(referrerAddress);
+      }
+      console.log("Referrer Address:", referrerAddress);
+    }
+  }, [router.isReady]);
   const getCalculateValue = async () => {
     try {
       const weiValue = web3?.utils.toWei(dwtAmount, "ether");
@@ -83,12 +98,15 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
   const handleTokenPurchase = async (tokenContract: any, weiValue: any) => {
     const balance = await tokenContract.methods.balanceOf(address).call();
     const readableBalance = web3.utils.fromWei(balance, "ether");
-
     if (parseFloat(dwtAmount) > parseFloat(readableBalance)) {
       toast.error("Insufficient balance");
       return;
     }
-
+    const addresss = referrerAddress
+      ? referrerAddress
+      : referAddres
+      ? referAddres
+      : ownerAddress;
     const allowance = await tokenContract.methods
       .allowance(address, icoAddress)
       .call();
@@ -100,18 +118,20 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
         .send({ from: address });
     }
 
-    await ico.methods.buyTokens(weiValue, asset, ownerAddress).send({
+    await ico.methods.buyTokens(weiValue, asset, addresss).send({
       from: address,
       value: 0,
     });
+
     detailValue();
+    getValueByAddress();
     toast.success("Purchase DogWalker Token Successfully!");
     resetForm();
   };
   const resetForm = () => {
     setDwtAmount("");
     setAsset("");
-    setReferrerAddress("");
+    // setReferrerAddress("");
     setPayableAmountFromWei("");
     setPayableAmount("");
     setShowModal(false);
@@ -119,18 +139,15 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
   const handleWrite = async () => {
     try {
       const web3 = await getWeb3();
-    
-    // Check if we're using fallback (no wallet connected)
-    if (!(window as any).ethereum?.isConnected?.()) {
-      // Mobile-specific handling
-      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-        openInMetaMaskMobile();
-        return;
-      } else {
-        toast.error('Please connect MetaMask first');
-        return;
+      if (!(window as any).ethereum?.isConnected?.()) {
+        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+          openInMetaMaskMobile();
+          return;
+        } else {
+          toast.error("Please connect MetaMask first");
+          return;
+        }
       }
-    }
       if (!dwtAmount) {
         setError(true);
         return;
@@ -138,136 +155,35 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
 
       setIsLoading(true);
       const weiValue = web3.utils.toWei(dwtAmount, "ether");
-      const calculateValue = payableAmount + 0.000001;
+      const weiValueCal = web3.utils.toWei(0.000001, "ether");
+      const calculateValue = Number(payableAmount) + Number(weiValueCal);
       if (asset == 0) {
-        await ico.methods.buyTokens(weiValue, asset, ownerAddress).send({
+        const addresss = referrerAddress
+          ? referrerAddress
+          : referAddres
+          ? referAddres
+          : ownerAddress;
+        await ico.methods.buyTokens(weiValue, asset, addresss).send({
           from: address,
           value: calculateValue,
         });
+        getValueByAddress();
         detailValue();
+        resetForm();
         toast.success("Purchase DogWalker Token Successfully!");
       } else if (asset == 1) {
         await handleTokenPurchase(usdcContract, weiValue);
       } else if (asset == 2) {
         await handleTokenPurchase(usdtContract, weiValue);
       }
-    } catch (error:any) {
+    } catch (error: any) {
       console.error("Transaction failed:", error);
-      alert(error)
+      alert(error);
       toast.error("Transaction failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
-
-  //   const handleWrite = async () => {
-  //     try {
-  //       if (!dwtAmount) {
-  //         setError(true);
-  //         return;
-  //       }
-  //       setIsLoading(true);
-  //       const weiValue = web3?.utils.toWei(dwtAmount, "ether");
-  //       const calculateValue = payableAmount + 0.000001;
-  //       if (asset == 0) {
-  //         const buyTokens = await ico.methods
-  //           .buyTokens(weiValue, asset, ownerAddress)
-  //           .send({
-  //             from: address,
-  //             value: calculateValue,
-  //           });
-  //         if (buyTokens) {
-  //           toast.success("Purchase DogWalker Token Successfully!");
-  //         }
-  //       } else if (asset == 1) {
-  //         const previewBNB = await usdcContract.methods.balanceOf(address).call();
-  //         const humanReadable = web3.utils.fromWei(Number(previewBNB), "ether");
-  //         if (dwtAmount > humanReadable) {
-  //           toast.error("Insufficient balance");
-  //           return;
-  //         }
-  //         const allowance = await usdcContract.methods
-  //           .allowance(address, icoAddress)
-  //           .call();
-  //         const allowanceFromWei = web3.utils.fromWei(Number(allowance), "ether");
-  //         if (allowanceFromWei >= payableAmountFromWei) {
-  //           const buyTokens = await ico.methods
-  //             .buyTokens(weiValue, asset, ownerAddress)
-  //             .send({
-  //               from: address,
-  //               value: 0,
-  //             });
-  //           if (buyTokens) {
-  //             toast.success("Purchase DogWalker Token Successfully!");
-  //           }
-  //         } else {
-  //           await usdcContract.methods.approve(icoAddress, payableAmount).send({
-  //             from: address,
-  //           });
-  //           const buyTokens = await ico.methods
-  //             .buyTokens(weiValue, asset, ownerAddress)
-  //             .send({
-  //               from: address,
-  //               value: 0,
-  //             });
-  //           if (buyTokens) {
-  //             toast.success("Purchase DogWalker Token Successfully!");
-  //           }
-  //         }
-  //         setDwtAmount("");
-  //         setAsset("");
-  //         setReferrerAddress("");
-  //         setPayableAmountFromWei("");
-  //         setPayableAmount("");
-  //         setShowModal(false);
-  //       } else if (asset == 2) {
-  //         const previewBNB = await usdtContract.methods.balanceOf(address).call();
-  //         const humanReadable = web3.utils.fromWei(Number(previewBNB), "ether");
-  //         if (dwtAmount > humanReadable) {
-  //           toast.error("Insufficient balance");
-  //           return;
-  //         }
-  //         const allowance = await usdtContract.methods
-  //           .allowance(address, icoAddress)
-  //           .call();
-  //         const allowanceFromWei = web3.utils.fromWei(Number(allowance), "ether");
-  //         if (allowanceFromWei >= payableAmountFromWei) {
-  //           const buyTokens = await ico.methods
-  //             .buyTokens(weiValue, asset, ownerAddress)
-  //             .send({
-  //               from: address,
-  //               value: 0,
-  //             });
-  //           if (buyTokens) {
-  //             toast.success("Purchase DogWalker Token Successfully!");
-  //           }
-  //         } else {
-  //           await usdtContract.methods.approve(icoAddress, payableAmount).send({
-  //             from: address,
-  //           });
-  //           const buyTokens = await ico.methods
-  //             .buyTokens(weiValue, asset, ownerAddress)
-  //             .send({
-  //               from: address,
-  //               value: 0,
-  //             });
-  //           if (buyTokens) {
-  //             toast.success("Purchase DogWalker Token Successfully!");
-  //           }
-  //         }
-  //         setDwtAmount("");
-  //         setAsset("");
-  //         setReferrerAddress("");
-  //         setPayableAmountFromWei("");
-  //         setPayableAmount("");
-  //         setShowModal(false);
-  //       }
-  //     } catch (error) {
-  //       console.error("Transaction failed:", error);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
   useEffect(() => {
     getCalculateValue();
   }, [asset, dwtAmount]);
@@ -283,6 +199,7 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
       const usdt = await getUSDTContract();
       const ico = await getICOContract();
       const web3 = await getWeb3();
+
       setUsdcContract(usdc);
       setUsdtContract(usdt);
       setIco(ico);
@@ -301,7 +218,7 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
           onClick={() => {
             setDwtAmount("");
             setAsset("");
-            setReferrerAddress("");
+            // setReferrerAddress("");
             setPayableAmountFromWei("");
             setPayableAmount("");
             setShowModal(false);
@@ -319,7 +236,7 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
               onChange={(e) => {
                 setAsset(e.target.value);
                 setDwtAmount("");
-                setReferrerAddress("");
+                // setReferrerAddress("");
                 setPayableAmountFromWei("");
                 setPayableAmount("");
               }}
@@ -363,7 +280,13 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
                 <input
                   type="text"
                   placeholder="Enter address"
-                  value={(ownerAddress as string) || ""}
+                  value={
+                    referrerAddress
+                      ? referrerAddress
+                      : referAddres
+                      ? referAddres
+                      : (ownerAddress as string)
+                  }
                   readOnly
                   //   onChange={(e) => setReferrerAddress(e.target.value)}
                 />

@@ -1,4 +1,4 @@
-export const icoAddress = "0x8b88c9d416e1F76F1ce503c4d397AC3D0C17a65C";
+export const icoAddress = "0xaf2389ECF06CAdc473Df8905E828eC19B0EB84e8";
 export const icoAbi = [
   {
     inputs: [
@@ -338,6 +338,13 @@ export const icoAbi = [
     inputs: [],
     name: "usdt",
     outputs: [{ internalType: "contract IERC20", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "address", name: "_user", type: "address" }],
+    name: "userPurchases",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },

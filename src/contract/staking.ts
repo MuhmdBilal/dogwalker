@@ -1,4 +1,4 @@
-export const stakingAddress = "0x1Eb6A2346d4E6ff6BE4b2887Ec3bf2F72604E2e7";
+export const stakingAddress = "0x86D6e076d036E153054395A476F0D67729207695";
 export const stakingAbi = [
   {
     inputs: [
@@ -67,6 +67,12 @@ export const stakingAbi = [
         name: "reward",
         type: "uint256",
       },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "principal",
+        type: "uint256",
+      },
     ],
     name: "RewardClaimed",
     type: "event",
@@ -96,6 +102,20 @@ export const stakingAbi = [
       },
     ],
     name: "Staked",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: "address", name: "user", type: "address" },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "Unstaked",
     type: "event",
   },
   {
@@ -158,6 +178,13 @@ export const stakingAbi = [
     type: "function",
   },
   {
+    inputs: [{ internalType: "address", name: "user", type: "address" }],
+    name: "getAccruedReward",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "getPoolData",
     outputs: [
@@ -186,6 +213,7 @@ export const stakingAbi = [
       { internalType: "uint256", name: "startTime", type: "uint256" },
       { internalType: "bool", name: "claimed", type: "bool" },
       { internalType: "uint256", name: "claimableReward", type: "uint256" },
+      { internalType: "uint256", name: "timeLeft", type: "uint256" },
     ],
     stateMutability: "view",
     type: "function",
@@ -270,6 +298,13 @@ export const stakingAbi = [
     type: "function",
   },
   {
+    inputs: [{ internalType: "address", name: "user", type: "address" }],
+    name: "timeUntilUnlock",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "totalStaked",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
@@ -279,6 +314,13 @@ export const stakingAbi = [
   {
     inputs: [{ internalType: "address", name: "newOwner", type: "address" }],
     name: "transferOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "unstake",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

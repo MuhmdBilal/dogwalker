@@ -18,8 +18,14 @@ import PreSaleRectangleRightTwo from "@/assets/img/PreSaleRectangleRightTwo.svg"
 import { useAccount } from "wagmi";
 import PurchaseModal from "../More/purchaseModal";
 import { toast } from "react-toastify";
-import { getICOContract, getWeb3 } from "@/utils/web3";
-const Presale: React.FC = () => {
+import { getDwtToken, getICOContract, getStaking, getWeb3 } from "@/utils/web3";
+const Presale = ({
+  setHasMinimumPurchased,
+  setBalanceOf,
+  setReferAddress,
+  referAddres,
+  setUserSpendUsdc
+}: any) => {
   const { t } = useTranslation("presale");
   const [isMobile, setIsMobile] = useState(false);
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -30,10 +36,17 @@ const Presale: React.FC = () => {
   const [currentPriceData, setCurrentPriceData] = useState<any>(0);
   const [tokensSoldData, setTokensSoldData] = useState<any>(0);
   const [percentageRaised, setPercentageRaised] = useState<any>(0);
+  const [currentRound, setCurrentRound] = useState<any>(0);
+  const [stakingContract, setStakingContract] = useState<any>("");
+  const [dwtTokenContract, setDwtTokenContract] = useState<any>("");
   useEffect(() => {
     const loadContracts = async () => {
       const ico = await getICOContract();
       const web3 = await getWeb3();
+      const staking = await getStaking();
+      const dwtToken = await getDwtToken();
+      setDwtTokenContract(dwtToken);
+      setStakingContract(staking);
       setIco(ico);
       setWeb3(web3);
     };
@@ -69,10 +82,40 @@ const Presale: React.FC = () => {
           ? Math.min((totalRaisedUSDFromWei / maxPaiseFromWei) * 100, 100)
           : 0;
       setPercentageRaised(percentageRaised);
+      const currentRound = await ico.methods.currentRound().call();
+      setCurrentRound(Number(currentRound));
     } catch (e) {
       console.log("e", e);
     }
   };
+  const getValueByAddress = async () => {
+    try {
+      if (isConnected) {
+        const hasMinimumPurchased = await stakingContract.methods
+          .hasMinimumPurchased(address)
+          .call();
+        setHasMinimumPurchased(hasMinimumPurchased);
+        const balanceOf = await dwtTokenContract.methods
+          .balanceOf(address)
+          .call();
+        const balanceOfFromWei = web3.utils.fromWei(Number(balanceOf), "ether");
+        setBalanceOf(balanceOfFromWei);
+        const referrerOf= await ico.methods.referrerOf(address).call();
+        setReferAddress(referrerOf)
+        const userSpentUSD = await ico.methods.referrerOf(address).call();
+        const userSpentUSDFromWei = web3.utils.fromWei(Number(userSpentUSD), "ether");
+        setUserSpendUsdc(userSpentUSDFromWei)
+      }
+    } catch (e) {
+      console.log("e", e);
+    }
+  };
+  useEffect(() => {
+    if (stakingContract) {
+      getValueByAddress();
+    }
+  }, [stakingContract, dwtTokenContract, isConnected]);
+
   useEffect(() => {
     if (ico) {
       getValue();
@@ -180,10 +223,10 @@ const Presale: React.FC = () => {
               </div>
               <div className={classes.infoRow}>
                 <span className={classes.sold}>
-                  {t("soldLabel")} {tokensSoldData} DWT
+                  {t("soldLabel")} {Number(tokensSoldData).toFixed(2)} DWT
                 </span>
                 <span className={classes.total}>
-                  {t("totalLabel")} {Number(icoRemaining).toFixed(2)}
+                  {t("totalLabel")} {Number(icoRemaining)}
                 </span>
               </div>
             </div>
@@ -191,10 +234,11 @@ const Presale: React.FC = () => {
 
           <div className={classes.presale__boxFour}>
             <div className={classes.timer}>
-              <div className={classes.timerRow}>
+              <span className={classes.label}>{t("currentRound")}</span>
+              <span className={classes.currentRound}>{currentRound}</span>
+              {/* <div className={classes.timerRow}>
                 {["days", "hours", "mins", "secs"].map((u, i, arr) => (
                   <React.Fragment key={u}>
-                    {/* wrapper dla liczby + etykiety */}
                     <div className={classes.unitGroup}>
                       <div className={classes.unitBox}>
                         {u === "days"
@@ -207,17 +251,16 @@ const Presale: React.FC = () => {
                       </div>
                       <div className={classes.unitLabel}>{t(u)}</div>
                     </div>
-                    {/* dwukropek, poza ostatnim */}
                     {i < arr.length - 1 && (
                       <div className={classes.colon}>:</div>
                     )}
                   </React.Fragment>
                 ))}
-              </div>
-              <small className={classes.until}>
+              </div> */}
+              {/* <small className={classes.until}>
                 <Image src={RocketIcon} alt="" />
                 {t("until")}
-              </small>
+              </small> */}
             </div>
           </div>
 
@@ -257,6 +300,8 @@ const Presale: React.FC = () => {
         onClose={() => setShowModal(false)}
         setShowModal={setShowModal}
         detailValue={getValue}
+        getValueByAddress={getValueByAddress}
+        referAddres={referAddres}
       />
     </div>
   );

@@ -1,5 +1,5 @@
-const dwtTokenAddress = "0xdc08296c97e01d378804174B96831022dc44530e";
-const dwtTokenAbi = [
+export const dwtTokenAddress = "0xdc08296c97e01d378804174B96831022dc44530e";
+export const dwtTokenAbi = [
   { inputs: [], stateMutability: "nonpayable", type: "constructor" },
   {
     inputs: [
