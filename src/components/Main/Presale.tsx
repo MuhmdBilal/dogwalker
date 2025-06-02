@@ -226,7 +226,7 @@ const Presale = ({
                   {t("soldLabel")} {Number(tokensSoldData).toFixed(2)} DWT
                 </span>
                 <span className={classes.total}>
-                  {t("totalLabel")} {Number(icoRemaining)}
+                  {t("totalLabel")} {Number(icoRemaining).toFixed(2)}
                 </span>
               </div>
             </div>

@@ -20,6 +20,7 @@ import { useAccount } from "wagmi";
 import { toast } from "react-toastify";
 import Link from "next/link";
 import { stakingAddress } from "@/contract/staking";
+import { error } from "console";
 const Staking = ({
   setHasMinimumPurchased,
   hasMinimumPurchased,
@@ -83,9 +84,10 @@ const Staking = ({
         const pctOfPoolFromWei = web3.utils.fromWei(
           Number(getUserPoolInfo.pctOfPool),
           "ether"
-        ); 
+        );
+
         setUserPoolInfo({
-          pctOfPool: pctOfPoolFromWei,
+          pctOfPool: pctOfPoolFromWei * 100,
           userBalance: userBalanceFromWei,
         });
         const getAccruedReward = await stakingContract.methods
@@ -150,13 +152,14 @@ const Staking = ({
         .claimReward()
         .send({ from: address });
       if (claimReward) {
-         getStakingValue();
-          getTokenBalance();
-          getRewardRatesHanlde();
+        getStakingValue();
+        getTokenBalance();
+        getRewardRatesHanlde();
         toast.success("Stake reward claimed successfully!");
       }
     } catch (e) {
       console.log("e", e);
+      toast.error("SomeTing want wrong.Please try again");
     } finally {
       setIsClaimLoading(false);
     }
@@ -178,13 +181,14 @@ const Staking = ({
         .unstake()
         .send({ from: address });
       if (unstake) {
-         getStakingValue();
-          getTokenBalance();
-          getRewardRatesHanlde();
+        getStakingValue();
+        getTokenBalance();
+        getRewardRatesHanlde();
         toast.success("Token unstaked successfully!");
       }
     } catch (e) {
       console.log("e", e);
+      toast.error("SomeTing want wrong.Please try again");
     } finally {
       setUnstakeLoading(false);
     }
@@ -196,26 +200,47 @@ const Staking = ({
         toast.error("Please connect MetaMask first");
         return;
       }
-      setStakeLoading(true);
-      const readableBalance = web3.utils.toWei(Math.floor(balanceOf).toString(), "ether");
-      const approve = await dwtTokenContract.methods
-        .approve(stakingAddress, readableBalance)
-        .send({
-          from: address,
-        });
-      if (approve) {
-        const stakes = await stakingContract.methods
-          .stake(readableBalance)
-          .send({ from: address });
-        if (stakes) {
-          toast.success("Token staked successfully!");
-          getStakingValue();
-          getTokenBalance();
-          getRewardRatesHanlde();
-        }
+      if (stakeData.totalStaked > 0) {
+        toast.error(
+          "You have already staked an amount. Additional staking is not allowed."
+        );
+        return;
       }
+      setStakeLoading(true);
+      const allowance = await dwtTokenContract.methods
+        .allowance(address, stakingAddress)
+        .call();
+      
+      const readableBalance = web3.utils.toWei(
+        Math.floor(balanceOf).toString(),
+        "ether"
+      );
+      const amountFromWei = web3.utils.fromWei(
+        Number(allowance),
+        "ether"
+      );
+      if (amountFromWei < balanceOf) {
+        await dwtTokenContract.methods
+          .approve(stakingAddress, readableBalance)
+          .send({
+            from: address,
+          });
+      }
+
+      // if (approve) {
+      const stakes = await stakingContract.methods
+        .stake(readableBalance)
+        .send({ from: address });
+      if (stakes) {
+        toast.success("Token staked successfully!");
+        getStakingValue();
+        getTokenBalance();
+        getRewardRatesHanlde();
+      }
+      // }
     } catch (e) {
       console.log("e", e);
+      toast.error("SomeTing want wrong.Please try again");
     } finally {
       setStakeLoading(false);
     }
@@ -347,7 +372,8 @@ const Staking = ({
             <div className={classes.card}>
               <span className={classes.label}>{t("percentOfPoolLabel")}</span>
               <span className={classes.value}>
-                {userPoolInfo && Number(userPoolInfo?.pctOfPool).toFixed(2)}% DWT
+                {userPoolInfo && Number(userPoolInfo?.pctOfPool).toFixed(2)}%
+                DWT
               </span>
 
               <span className={classes.label}>{t("totalStakedLabel")}</span>
@@ -377,12 +403,10 @@ const Staking = ({
               <ul className={classes.notes}>
                 <li>{t("rewardsRateDynamic")}</li>
                 <li>
-                  {t("monthlyNote")} {rewardRate && rewardRate.monthlyRate}%{" "}
-                  {t("reward")}{" "}
+                  {t("monthlyNote")} 1.25% &nbsp;{t("reward")}{" "}
                 </li>
                 <li>
-                  {t("dailyNote")} {rewardRate && rewardRate.dailyRate}%{" "}
-                  {t("reward")}
+                  {t("dailyNote")} 0.041% &nbsp;{t("reward")}
                 </li>
               </ul>
             </div>

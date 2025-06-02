@@ -52,7 +52,6 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
       if (referrerAddress) {
         setReferrerAddress(referrerAddress);
       }
-      console.log("Referrer Address:", referrerAddress);
     }
   }, [router.isReady]);
   const getCalculateValue = async () => {
