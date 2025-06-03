@@ -204,7 +204,7 @@ const handleStaking = async () => {
       }
       return;
     }
-
+      const web3 = await getWeb3();
     if (stakeData.totalStaked > 0) {
       toast.error(
         "You have already staked an amount. Additional staking is not allowed."
