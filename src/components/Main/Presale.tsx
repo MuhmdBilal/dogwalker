@@ -39,8 +39,7 @@ const Presale = ({
   const [currentRound, setCurrentRound] = useState<any>(0);
   const [stakingContract, setStakingContract] = useState<any>("");
   const [dwtTokenContract, setDwtTokenContract] = useState<any>("");
-  useEffect(() => {
-    const loadContracts = async () => {
+  const loadContracts = async () => {
       const ico = await getICOContract();
       const web3 = await getWeb3();
       const staking = await getStaking();
@@ -50,8 +49,12 @@ const Presale = ({
       setIco(ico);
       setWeb3(web3);
     };
-    loadContracts();
-  }, []);
+  useEffect(() => {
+    
+    if(isConnected){
+      loadContracts();
+    }
+  }, [isConnected]);
 
   const getValue = async () => {
     try {

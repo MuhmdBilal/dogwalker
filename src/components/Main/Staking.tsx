@@ -346,9 +346,7 @@ const handleStaking = async () => {
       getTokenBalance();
     }
   }, [dwtTokenContract, isConnected]);
-
-  useEffect(() => {
-    const loadContracts = async () => {
+const loadContracts = async () => {
       const dwtToken = await getDwtToken();
       const staking = await getStaking();
       const web3 = await getWeb3();
@@ -356,8 +354,11 @@ const handleStaking = async () => {
       setDwtTokenContract(dwtToken);
       setWeb3(web3);
     };
-    loadContracts();
-  }, []);
+  useEffect(() => {
+    if(isConnected){
+      loadContracts();
+    }
+  }, [isConnected]);
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 992);
     checkMobile();
@@ -458,13 +459,13 @@ const handleStaking = async () => {
             <div className={classes.card}>
               <span className={classes.label}>{t("percentOfPoolLabel")}</span>
               <span className={classes.value}>
-                {userPoolInfo && Number(userPoolInfo?.pctOfPool).toFixed(2)}%
+                {userPoolInfo ? Number(userPoolInfo?.pctOfPool).toFixed(2) : "0.00"}%
                 DWT
               </span>
 
               <span className={classes.label}>{t("totalStakedLabel")}</span>
               <span className={classes.value}>
-                {stakeData && Number(stakeData?.totalStaked).toFixed(2)} DWT
+                {stakeData ? Number(stakeData?.totalStaked).toFixed(2) : "0.00"} DWT
               </span>
 
               <button
@@ -483,7 +484,7 @@ const handleStaking = async () => {
                 {t("estimatedRewardsLabel")}
               </span>
               <span className={classes.value}>
-                {rewardRate && rewardRate.apr}% P/a
+                {rewardRate ? rewardRate.apr: "0.00"}% P/a
               </span>
 
               <ul className={classes.notes}>

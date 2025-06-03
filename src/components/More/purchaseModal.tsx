@@ -191,9 +191,7 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
       getValue();
     }
   }, [ico]);
-
-  useEffect(() => {
-    const loadContracts = async () => {
+ const loadContracts = async () => {
       const usdc = await getUSDCContract();
       const usdt = await getUSDTContract();
       const ico = await getICOContract();
@@ -204,8 +202,11 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
       setIco(ico);
       setWeb3(web3);
     };
-    loadContracts();
-  }, []);
+  useEffect(() => {
+     if(isConnected){
+       loadContracts();
+     }
+  }, [isConnected]);
 
   if (!isOpen) return null;
 
