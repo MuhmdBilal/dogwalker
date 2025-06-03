@@ -7,6 +7,39 @@ import Web3 from "web3";
 const fallbackRPC = "https://data-seed-prebsc-1-s1.binance.org:8545/";
 let web3Instance: Web3 | null = null;
 
+// export const getWeb3 = async (): Promise<Web3> => {
+//   if (web3Instance) return web3Instance;
+
+//   // Check for MetaMask or mobile providers
+//   if (typeof window !== "undefined" && (window as any).ethereum) {
+//     try {
+//       // Request account access
+//       await (window as any).ethereum.request({ method: "eth_requestAccounts" });
+
+//       // Mobile-specific check (MetaMask injects differently on mobile)
+//       if ((window as any).ethereum.isMetaMask) {
+//         web3Instance = new Web3((window as any).ethereum);
+
+//         // Mobile workaround: Listen for provider changes
+//         (window as any).ethereum.on("chainChanged", () =>
+//           window.location.reload()
+//         );
+//         (window as any).ethereum.on("accountsChanged", () =>
+//           window.location.reload()
+//         );
+
+//         return web3Instance;
+//       }
+//     } catch (error) {
+//       console.warn("MetaMask connection failed:", error);
+//     }
+//   }
+
+//   // Fallback to BSC Testnet RPC
+//   console.warn("Using fallback BSC Testnet provider");
+//   web3Instance = new Web3(new Web3.providers.HttpProvider(fallbackRPC));
+//   return web3Instance;
+// };
 
 export const getWeb3 = async (): Promise<Web3> => {
   if (web3Instance) return web3Instance;
@@ -48,6 +81,7 @@ export const isMobile = () => {
   return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 };
 // Helper function for mobile deep linking
+// utils/web.ts
 export const openInMetaMaskMobile = (path = '') => {
   try {
     if (typeof window === 'undefined') {
@@ -88,6 +122,10 @@ export const openInMetaMaskMobile = (path = '') => {
   }
 };
 
+export const isMetaMaskMobile = () => {
+  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) && 
+         !/MetaMaskMobile|FBAV|FBAN|FBIOS|Twitter/i.test(navigator.userAgent);
+};
 
 export const getICOContract = async (): Promise<any | null> => {
   const web3 = await getWeb3();
