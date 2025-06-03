@@ -188,6 +188,7 @@ const Staking = ({
       }
     } catch (e) {
       console.log("e", e);
+      alert(e)
       toast.error("SomeTing want wrong.Please try again");
     } finally {
       setUnstakeLoading(false);
@@ -240,6 +241,7 @@ const Staking = ({
       // }
     } catch (e) {
       console.log("e", e);
+      alert(e)
       toast.error("SomeTing want wrong.Please try again");
     } finally {
       setStakeLoading(false);
