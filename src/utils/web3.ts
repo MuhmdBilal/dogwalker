@@ -4,77 +4,43 @@ import { usdtAbi, usdtAddress } from "@/contract/usdt";
 import  {dwtTokenAbi,dwtTokenAddress} from "@/contract/dwtToken"
 import { stakingAbi, stakingAddress } from "@/contract/staking";
 import Web3 from "web3";
-const fallbackRPC = "https://data-seed-prebsc-1-s1.binance.org:8545/";
+const fallbackRPC = ["https://data-seed-prebsc-1-s1.binance.org:8545/", "https://bsc-testnet.public.blastapi.io", "https://bsc-testnet.drpc.org", "https://api.zan.top/bsc-testnet"];
 let web3Instance: Web3 | null = null;
-
-// export const getWeb3 = async (): Promise<Web3> => {
-//   if (web3Instance) return web3Instance;
-
-//   // Check for MetaMask or mobile providers
-//   if (typeof window !== "undefined" && (window as any).ethereum) {
-//     try {
-//       // Request account access
-//       await (window as any).ethereum.request({ method: "eth_requestAccounts" });
-
-//       // Mobile-specific check (MetaMask injects differently on mobile)
-//       if ((window as any).ethereum.isMetaMask) {
-//         web3Instance = new Web3((window as any).ethereum);
-
-//         // Mobile workaround: Listen for provider changes
-//         (window as any).ethereum.on("chainChanged", () =>
-//           window.location.reload()
-//         );
-//         (window as any).ethereum.on("accountsChanged", () =>
-//           window.location.reload()
-//         );
-
-//         return web3Instance;
-//       }
-//     } catch (error) {
-//       console.warn("MetaMask connection failed:", error);
-//     }
-//   }
-
-//   // Fallback to BSC Testnet RPC
-//   console.warn("Using fallback BSC Testnet provider");
-//   web3Instance = new Web3(new Web3.providers.HttpProvider(fallbackRPC));
-//   return web3Instance;
-// };
 
 export const getWeb3 = async (): Promise<Web3> => {
   if (web3Instance) return web3Instance;
 
-  // Check for any Ethereum provider
   if (typeof window !== "undefined" && (window as any).ethereum) {
     try {
       const provider = (window as any).ethereum;
-      
-      // Handle both desktop and mobile providers
       await provider.request({ method: "eth_requestAccounts" });
-      
-      web3Instance = new Web3(provider);
 
-      // Add event listeners for changes
+      web3Instance = new Web3(provider);
       provider.on("chainChanged", () => window.location.reload());
       provider.on("accountsChanged", () => window.location.reload());
 
       return web3Instance;
     } catch (error) {
       console.warn("Ethereum provider connection failed:", error);
-      // Fall through to fallback
     }
   }
 
-  // For mobile browsers that don't inject window.ethereum automatically
-  if (typeof window !== "undefined" && (window as any).web3) {
-    web3Instance = new Web3((window as any).web3.currentProvider);
-    return web3Instance;
+  // Fallback to BSC Testnet RPCs
+  for (const rpcUrl of fallbackRPC) {
+    try {
+      const tempWeb3 = new Web3(new Web3.providers.HttpProvider(rpcUrl));
+      const isListening = await tempWeb3.eth.net.isListening();
+      if (isListening) {
+        console.warn(`Connected to fallback RPC: ${rpcUrl}`);
+        web3Instance = tempWeb3;
+        return web3Instance;
+      }
+    } catch (err) {
+      console.warn(`RPC failed: ${rpcUrl}`, err);
+    }
   }
 
-  // Fallback to BSC Testnet RPC
-  console.warn("Using fallback BSC Testnet provider");
-  web3Instance = new Web3(new Web3.providers.HttpProvider(fallbackRPC));
-  return web3Instance;
+  throw new Error("All fallback RPCs failed.");
 };
 
 export const isMobile = () => {
@@ -130,6 +96,7 @@ export const isMetaMaskMobile = () => {
 // Contract
 export const getICOContract = async (): Promise<any | null> => {
   const web3 = await getWeb3();
+
   if (web3) {
     return new web3.eth.Contract(icoAbi as any, icoAddress);
   }

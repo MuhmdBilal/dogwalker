@@ -19,6 +19,10 @@ import { useAccount } from "wagmi";
 import PurchaseModal from "../More/purchaseModal";
 import { toast } from "react-toastify";
 import { getDwtToken, getICOContract, getStaking, getWeb3 } from "@/utils/web3";
+import Web3 from "web3";
+import { icoAbi, icoAddress } from "@/contract/ico";
+import { stakingAbi, stakingAddress } from "@/contract/staking";
+import { dwtTokenAbi, dwtTokenAddress } from "@/contract/dwtToken";
 const Presale = ({
   setHasMinimumPurchased,
   setBalanceOf,
@@ -30,24 +34,39 @@ const Presale = ({
   const [isMobile, setIsMobile] = useState(false);
   const [showModal, setShowModal] = useState<boolean>(false);
   const { isConnected, address } = useAccount();
-  const [ico, setIco] = useState<any>(null);
-  const [web3, setWeb3] = useState<any>(null);
+  // const [ico, setIco] = useState<any>(null);
+  // const [web3, setWeb3] = useState<any>(null);
   const [icoRemaining, setIcoRemaining] = useState<any>(0);
   const [currentPriceData, setCurrentPriceData] = useState<any>(0);
   const [tokensSoldData, setTokensSoldData] = useState<any>(0);
   const [percentageRaised, setPercentageRaised] = useState<any>(0);
   const [currentRound, setCurrentRound] = useState<any>(0);
-  const [stakingContract, setStakingContract] = useState<any>("");
-  const [dwtTokenContract, setDwtTokenContract] = useState<any>("");
+  // const [stakingContract, setStakingContract] = useState<any>("");
+  // const [dwtTokenContract, setDwtTokenContract] = useState<any>("");
+  const web3 = new Web3("https://data-seed-prebsc-1-s1.binance.org:8545/");
+  const icoIntegrateContract = () => {
+    const ico_Contract = new web3.eth.Contract(icoAbi, icoAddress);
+    return ico_Contract;
+  };
+   const stakingIntegrateContract = () => {
+    const stake_Contract = new web3.eth.Contract(stakingAbi, stakingAddress);
+    return stake_Contract;
+  };
+  const dwtTokenIntegrateContract = () => {
+    const ico_Contract = new web3.eth.Contract(dwtTokenAbi, dwtTokenAddress);
+    return ico_Contract;
+  };
   const loadContracts = async () => {
       const ico = await getICOContract();
-      const web3 = await getWeb3();
+      console.log("ico", ico);
+      
+      // const web3 = await getWeb3();
       const staking = await getStaking();
       const dwtToken = await getDwtToken();
-      setDwtTokenContract(dwtToken);
-      setStakingContract(staking);
-      setIco(ico);
-      setWeb3(web3);
+      // setDwtTokenContract(dwtToken);
+      // setStakingContract(staking);
+      // setIco(ico);
+      // setWeb3(web3);
     };
   useEffect(() => {
     
@@ -58,34 +77,35 @@ const Presale = ({
 
   const getValue = async () => {
     try {
-      const icoRemaining = await ico.methods.icoRemaining().call();
+      const icoContract = icoIntegrateContract()
+      const icoRemaining = await icoContract.methods.icoRemaining().call();
       const icoRemainingFromWei = web3.utils.fromWei(
         Number(icoRemaining),
         "ether"
       );
       setIcoRemaining(icoRemainingFromWei);
-      const getCurrentPrice = await ico.methods.getCurrentPrice().call();
+      const getCurrentPrice = await icoContract.methods.getCurrentPrice().call();
       const getCurrentPriceFromWei = web3.utils.fromWei(
         Number(getCurrentPrice),
         "ether"
       );
       setCurrentPriceData(getCurrentPriceFromWei);
-      const tokensSold = await ico.methods.tokensSold().call();
+      const tokensSold = await icoContract.methods.tokensSold().call();
       const tokensSoldFromWei = web3.utils.fromWei(Number(tokensSold), "ether");
       setTokensSoldData(tokensSoldFromWei);
-      const totalRaisedUSD = await ico.methods.totalRaisedUSD().call();
+      const totalRaisedUSD = await icoContract.methods.totalRaisedUSD().call();
       const totalRaisedUSDFromWei = web3.utils.fromWei(
         Number(totalRaisedUSD),
         "ether"
       );
-      const maxPaise = await ico.methods.MAX_RAISE().call();
+      const maxPaise = await icoContract.methods.MAX_RAISE().call();
       const maxPaiseFromWei = web3.utils.fromWei(Number(maxPaise), "ether");
       const percentageRaised =
-        maxPaiseFromWei > 0
-          ? Math.min((totalRaisedUSDFromWei / maxPaiseFromWei) * 100, 100)
+        Number(maxPaiseFromWei) > 0
+          ? Math.min(((Number(totalRaisedUSDFromWei)) / Number(maxPaiseFromWei)) * 100, 100)
           : 0;
       setPercentageRaised(percentageRaised);
-      const currentRound = await ico.methods.currentRound().call();
+      const currentRound = await icoContract.methods.currentRound().call();
       setCurrentRound(Number(currentRound));
     } catch (e) {
       console.log("e", e);
@@ -94,7 +114,10 @@ const Presale = ({
   const getValueByAddress = async () => {
     try {
       if (isConnected) {
-        const hasMinimumPurchased = await stakingContract.methods
+        const icoContract = icoIntegrateContract()
+        const stakeContract = stakingIntegrateContract()
+        const dwtTokenContract= dwtTokenIntegrateContract()
+        const hasMinimumPurchased = await stakeContract.methods
           .hasMinimumPurchased(address)
           .call();
         setHasMinimumPurchased(hasMinimumPurchased);
@@ -103,9 +126,9 @@ const Presale = ({
           .call();
         const balanceOfFromWei = web3.utils.fromWei(Number(balanceOf), "ether");
         setBalanceOf(balanceOfFromWei);
-        const referrerOf= await ico.methods.referrerOf(address).call();
+        const referrerOf= await icoContract.methods.referrerOf(address).call();
         setReferAddress(referrerOf)
-        const userSpentUSD = await ico.methods.referrerOf(address).call();
+        const userSpentUSD = await icoContract.methods.referrerOf(address).call();
         const userSpentUSDFromWei = web3.utils.fromWei(Number(userSpentUSD), "ether");
         setUserSpendUsdc(userSpentUSDFromWei)
       }
@@ -114,16 +137,16 @@ const Presale = ({
     }
   };
   useEffect(() => {
-    if (stakingContract) {
+    // if (stakingContract) {
       getValueByAddress();
-    }
-  }, [stakingContract, dwtTokenContract, isConnected]);
+    // }
+  }, [isConnected]);
 
   useEffect(() => {
-    if (ico) {
+    // if (ico) {
       getValue();
-    }
-  }, [ico]);
+    // }
+  }, []);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 992);
