@@ -11,8 +11,11 @@ import {
   getWeb3,
   openInMetaMaskMobile,
 } from "@/utils/web3";
-import { icoAddress } from "@/contract/ico";
+import { icoAbi, icoAddress } from "@/contract/ico";
 import { useRouter } from "next/router";
+import Web3 from "web3";
+import { usdtAbi, usdtAddress } from "@/contract/usdt";
+import { usdcAbi, usdcAddress } from "@/contract/usdc";
 interface PurchaseModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -31,21 +34,37 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
   referAddres,
 }) => {
   const [asset, setAsset] = useState<any>("");
+  // const web3 = new Web3("https://data-seed-prebsc-1-s1.binance.org:8545/");
+  // const web3 = new Web3(window.ethereum as any); 
+  let web3 : any ; 
+  if (typeof window !== 'undefined' && window.ethereum) {
+   web3 = new Web3(window.ethereum);
+  // Rest of your code
+} else {
+  console.error('Ethereum provider not found!');
+}
   const [hash, setHash] = useState<any>(null);
   const [dwtAmount, setDwtAmount] = useState("");
   const [referrerAddress, setReferrerAddress] = useState<any>("");
   const { isConnected, address } = useAccount();
-  const [usdcContract, setUsdcContract] = useState<any>(null);
-  const [usdtContract, setUsdtContract] = useState<any>(null);
-  const [web3, setWeb3] = useState<any>(null);
-  const [ico, setIco] = useState<any>(null);
   const [payableAmountFromWei, setPayableAmountFromWei] = useState<any>("");
   const [payableAmount, setPayableAmount] = useState<any>("");
   const [ownerAddress, setOwnerAddress] = useState<any>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const router = useRouter();
-
+  const icoIntegrateContract = () => {
+    const ico_Contract = new web3.eth.Contract(icoAbi, icoAddress);
+    return ico_Contract;
+  };
+  const usdtIntegrateContract = () => {
+    const usdt_Contract = new web3.eth.Contract(usdtAbi, usdtAddress);
+    return usdt_Contract;
+  };
+  const usdcIntegrateContract = () => {
+    const usdc_Contract = new web3.eth.Contract(usdcAbi, usdcAddress);
+    return usdc_Contract;
+  };
   useEffect(() => {
     if (router.isReady) {
       const referrerAddress = router.query["referr-address"];
@@ -56,15 +75,20 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
   }, [router.isReady]);
   const getCalculateValue = async () => {
     try {
+      const icoContract = icoIntegrateContract();
       const weiValue = web3?.utils.toWei(dwtAmount, "ether");
       if (dwtAmount) {
         if (asset == 0) {
-          const previewBNB = await ico.methods.previewBNB(weiValue).call();
+          const previewBNB = await icoContract.methods
+            .previewBNB(weiValue)
+            .call();
           const humanReadable = web3.utils.fromWei(Number(previewBNB), "ether");
           setPayableAmountFromWei(humanReadable);
           setPayableAmount(Number(previewBNB));
         } else if (asset == 1) {
-          const previewUSDC = await ico.methods.previewUSDC(weiValue).call();
+          const previewUSDC = await icoContract.methods
+            .previewUSDC(weiValue)
+            .call();
           const humanReadable = web3.utils.fromWei(
             Number(previewUSDC),
             "ether"
@@ -72,7 +96,9 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
           setPayableAmountFromWei(humanReadable);
           setPayableAmount(Number(previewUSDC));
         } else if (asset == 2) {
-          const previewUSDT = await ico.methods.previewUSDT(weiValue).call();
+          const previewUSDT = await icoContract.methods
+            .previewUSDT(weiValue)
+            .call();
           const humanReadable = web3.utils.fromWei(
             Number(previewUSDT),
             "ether"
@@ -88,13 +114,15 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
 
   const getValue = async () => {
     try {
-      const owner = await ico.methods.owner().call();
+      const icoContract = icoIntegrateContract();
+      const owner = await icoContract.methods.owner().call();
       setOwnerAddress(owner);
     } catch (e) {
       console.log("e", e);
     }
   };
   const handleTokenPurchase = async (tokenContract: any, weiValue: any) => {
+    const icoContract = icoIntegrateContract();
     const balance = await tokenContract.methods.balanceOf(address).call();
     const readableBalance = web3.utils.fromWei(balance, "ether");
     if (parseFloat(dwtAmount) > parseFloat(readableBalance)) {
@@ -117,9 +145,9 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
         .send({ from: address });
     }
 
-    await ico.methods.buyTokens(weiValue, asset, addresss).send({
+    await icoContract.methods.buyTokens(weiValue, asset, addresss).send({
       from: address,
-      value: 0,
+      value: "0",
     });
 
     detailValue();
@@ -137,16 +165,19 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
   };
   const handleWrite = async () => {
     try {
+      const icoContract = icoIntegrateContract();
+      const usdtContract = usdtIntegrateContract();
+      const usdcContract = usdcIntegrateContract();
       const web3 = await getWeb3();
-      if (!(window as any).ethereum?.isConnected?.()) {
-        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-          openInMetaMaskMobile();
-          return;
-        } else {
-          toast.error("Please connect MetaMask first");
-          return;
-        }
-      }
+      // if (!(window as any).ethereum?.isConnected?.()) {
+      //   if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      //     openInMetaMaskMobile();
+      //     return;
+      //   } else {
+      //     toast.error("Please connect MetaMask first");
+      //     return;
+      //   }
+      // }
       if (!dwtAmount) {
         setError(true);
         return;
@@ -162,9 +193,9 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
           : referAddres
           ? referAddres
           : ownerAddress;
-        await ico.methods.buyTokens(weiValue, asset, addresss).send({
+        await icoContract.methods.buyTokens(weiValue, asset, addresss).send({
           from: address,
-          value: calculateValue,
+          value: calculateValue.toString(),
         });
         getValueByAddress();
         detailValue();
@@ -177,7 +208,7 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
       }
     } catch (error: any) {
       console.error("Transaction failed:", error);
-      alert(error);
+      // alert(error);
       toast.error("Transaction failed. Please try again.");
     } finally {
       setIsLoading(false);
@@ -187,26 +218,8 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
     getCalculateValue();
   }, [asset, dwtAmount]);
   useEffect(() => {
-    if (ico) {
-      getValue();
-    }
-  }, [ico]);
- const loadContracts = async () => {
-      const usdc = await getUSDCContract();
-      const usdt = await getUSDTContract();
-      const ico = await getICOContract();
-      const web3 = await getWeb3();
-
-      setUsdcContract(usdc);
-      setUsdtContract(usdt);
-      setIco(ico);
-      setWeb3(web3);
-    };
-  useEffect(() => {
-     if(isConnected){
-       loadContracts();
-     }
-  }, [isConnected]);
+    getValue();
+  }, []);
 
   if (!isOpen) return null;
 

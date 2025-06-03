@@ -18,7 +18,6 @@ import PreSaleRectangleRightTwo from "@/assets/img/PreSaleRectangleRightTwo.svg"
 import { useAccount } from "wagmi";
 import PurchaseModal from "../More/purchaseModal";
 import { toast } from "react-toastify";
-import { getDwtToken, getICOContract, getStaking, getWeb3 } from "@/utils/web3";
 import Web3 from "web3";
 import { icoAbi, icoAddress } from "@/contract/ico";
 import { stakingAbi, stakingAddress } from "@/contract/staking";
@@ -34,15 +33,11 @@ const Presale = ({
   const [isMobile, setIsMobile] = useState(false);
   const [showModal, setShowModal] = useState<boolean>(false);
   const { isConnected, address } = useAccount();
-  // const [ico, setIco] = useState<any>(null);
-  // const [web3, setWeb3] = useState<any>(null);
   const [icoRemaining, setIcoRemaining] = useState<any>(0);
   const [currentPriceData, setCurrentPriceData] = useState<any>(0);
   const [tokensSoldData, setTokensSoldData] = useState<any>(0);
   const [percentageRaised, setPercentageRaised] = useState<any>(0);
   const [currentRound, setCurrentRound] = useState<any>(0);
-  // const [stakingContract, setStakingContract] = useState<any>("");
-  // const [dwtTokenContract, setDwtTokenContract] = useState<any>("");
   const web3 = new Web3("https://data-seed-prebsc-1-s1.binance.org:8545/");
   const icoIntegrateContract = () => {
     const ico_Contract = new web3.eth.Contract(icoAbi, icoAddress);
@@ -56,24 +51,6 @@ const Presale = ({
     const ico_Contract = new web3.eth.Contract(dwtTokenAbi, dwtTokenAddress);
     return ico_Contract;
   };
-  const loadContracts = async () => {
-      const ico = await getICOContract();
-      console.log("ico", ico);
-      
-      // const web3 = await getWeb3();
-      const staking = await getStaking();
-      const dwtToken = await getDwtToken();
-      // setDwtTokenContract(dwtToken);
-      // setStakingContract(staking);
-      // setIco(ico);
-      // setWeb3(web3);
-    };
-  useEffect(() => {
-    
-    if(isConnected){
-      loadContracts();
-    }
-  }, [isConnected]);
 
   const getValue = async () => {
     try {
@@ -137,15 +114,11 @@ const Presale = ({
     }
   };
   useEffect(() => {
-    // if (stakingContract) {
       getValueByAddress();
-    // }
   }, [isConnected]);
 
   useEffect(() => {
-    // if (ico) {
       getValue();
-    // }
   }, []);
 
   useEffect(() => {

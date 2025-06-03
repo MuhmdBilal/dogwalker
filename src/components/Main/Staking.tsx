@@ -15,12 +15,19 @@ import Ellipse from "@/assets/img/Ellipse 5.svg";
 import Ellipse2 from "@/assets/img/Ellipse 6.svg";
 import DogWalkerLogo from "@/assets/img/DogLogoWhite.svg";
 import StakingClaimRewardsButton from "@/assets/img/StakingClaimRewardsButton.svg";
-import { getDwtToken, getStaking, getWeb3, isMetaMaskMobile, openInMetaMaskMobile } from "@/utils/web3";
+import {
+  getDwtToken,
+  getStaking,
+  getWeb3,
+  isMetaMaskMobile,
+  openInMetaMaskMobile,
+} from "@/utils/web3";
 import { useAccount } from "wagmi";
 import { toast } from "react-toastify";
 import Link from "next/link";
-import { stakingAddress } from "@/contract/staking";
-import { error } from "console";
+import { stakingAbi, stakingAddress } from "@/contract/staking";
+import Web3 from "web3";
+import { dwtTokenAbi, dwtTokenAddress } from "@/contract/dwtToken";
 const Staking = ({
   setHasMinimumPurchased,
   hasMinimumPurchased,
@@ -28,10 +35,15 @@ const Staking = ({
   balanceOf,
 }: any) => {
   const { t } = useTranslation("staking");
+  // const web3 = new Web3("https://data-seed-prebsc-1-s1.binance.org:8545/");
+   let web3 : any ; 
+    if (typeof window !== 'undefined' && window.ethereum) {
+     web3 = new Web3(window.ethereum);
+    // Rest of your code
+  } else {
+    console.error('Ethereum provider not found!');
+  }
   const [isMobile, setIsMobile] = useState(false);
-  const [stakingContract, setStakingContract] = useState<any>("");
-  const [dwtTokenContract, setDwtTokenContract] = useState<any>("");
-  const [web3, setWeb3] = useState<any>(null);
   const [stakeData, setStakeData] = useState<any>(null);
   const [userPoolInfo, setUserPoolInfo] = useState<any>(null);
   const [rewardRate, setRewardRate] = useState<any>(null);
@@ -42,9 +54,18 @@ const Staking = ({
   const [claimloading, setIsClaimLoading] = useState<boolean>(false);
   const [unstakeLoading, setUnstakeLoading] = useState<boolean>(false);
   const [stakeLoading, setStakeLoading] = useState<boolean>(false);
+  const stakingIntegrateContract = () => {
+    const stake_Contract = new web3.eth.Contract(stakingAbi, stakingAddress);
+    return stake_Contract;
+  };
+  const dwtTokenIntegrateContract = () => {
+    const ico_Contract = new web3.eth.Contract(dwtTokenAbi, dwtTokenAddress);
+    return ico_Contract;
+  };
   const getTokenBalance = async () => {
     try {
       if (isConnected) {
+        const dwtTokenContract= dwtTokenIntegrateContract()
         const balanceOf = await dwtTokenContract.methods
           .balanceOf(address)
           .call();
@@ -57,8 +78,9 @@ const Staking = ({
   };
   const getStakingValue = async () => {
     try {
+      const stakeContract = stakingIntegrateContract();
       if (isConnected) {
-        const getStakeData = await stakingContract.methods
+        const getStakeData: any = await stakeContract.methods
           .getStakeData(address)
           .call();
         const amountFromWei = web3.utils.fromWei(
@@ -74,14 +96,14 @@ const Staking = ({
           claimableReward: claimableRewardFromWei,
           claimed: getStakeData.claimed,
         });
-        const getUserPoolInfo = await stakingContract.methods
+        const getUserPoolInfo: any = await stakeContract.methods
           .getUserPoolInfo(address)
           .call();
         const userBalanceFromWei = web3.utils.fromWei(
           Number(getStakeData.userBalance),
           "ether"
         );
-        const pctOfPoolFromWei = web3.utils.fromWei(
+        const pctOfPoolFromWei : any= web3.utils.fromWei(
           Number(getUserPoolInfo.pctOfPool),
           "ether"
         );
@@ -90,19 +112,19 @@ const Staking = ({
           pctOfPool: pctOfPoolFromWei * 100,
           userBalance: userBalanceFromWei,
         });
-        const getAccruedReward = await stakingContract.methods
+        const getAccruedReward = await stakeContract.methods
           .getAccruedReward(address)
           .call();
-        const accruedRewardFromWei = web3.utils.fromWei(
+        const accruedRewardFromWei : any = web3.utils.fromWei(
           Number(getAccruedReward),
           "ether"
         );
         setAccruedReward(accruedRewardFromWei);
-        const isLockPeriodOver = await stakingContract.methods
+        const isLockPeriodOver : any = await stakeContract.methods
           .isLockPeriodOver(address)
           .call();
         setIsLockPeriodOver(isLockPeriodOver);
-        const hasMinimumPurchased = await stakingContract.methods
+        const hasMinimumPurchased = await stakeContract.methods
           .hasMinimumPurchased(address)
           .call();
         setHasMinimumPurchased(hasMinimumPurchased);
@@ -113,7 +135,8 @@ const Staking = ({
   };
   const getRewardRatesHanlde = async () => {
     try {
-      const getRewardRates = await stakingContract.methods
+      const stakeContract = stakingIntegrateContract();
+      const getRewardRates : any = await stakeContract.methods
         .getRewardRates()
         .call();
 
@@ -122,10 +145,10 @@ const Staking = ({
         dailyRate: Number(getRewardRates.dailyRate),
         monthlyRate: Number(getRewardRates.monthlyRate),
       });
-      const rewardsRemaining = await stakingContract.methods
+      const rewardsRemaining = await stakeContract.methods
         .rewardsRemaining()
         .call();
-      const amountFromWei = web3.utils.fromWei(
+      const amountFromWei: any = web3.utils.fromWei(
         Number(rewardsRemaining),
         "ether"
       );
@@ -147,8 +170,9 @@ const Staking = ({
         );
         return;
       }
+      const stakeContract = stakingIntegrateContract();
       setIsClaimLoading(true);
-      const claimReward = await stakingContract.methods
+      const claimReward = await stakeContract.methods
         .claimReward()
         .send({ from: address });
       if (claimReward) {
@@ -176,8 +200,9 @@ const Staking = ({
         toast.error("Unable to unstake: staked token amount is 0.");
         return;
       }
+      const stakeContract = stakingIntegrateContract();
       setUnstakeLoading(true);
-      const unstake = await stakingContract.methods
+      const unstake = await stakeContract.methods
         .unstake()
         .send({ from: address });
       if (unstake) {
@@ -188,185 +213,103 @@ const Staking = ({
       }
     } catch (e) {
       console.log("e", e);
-      alert(e)
+      alert(e);
       toast.error("SomeTing want wrong.Please try again");
     } finally {
       setUnstakeLoading(false);
     }
   };
- 
-const handleStaking = async () => {
-  try {
-    if (!isConnected) {
-      toast.error("Please connect MetaMask first");
-      if (isMetaMaskMobile()) {
-        openInMetaMaskMobile('staking');
+
+  const handleStaking = async () => {
+    try {
+      if (!isConnected) {
+        toast.error("Please connect MetaMask first");
+        if (isMetaMaskMobile()) {
+          openInMetaMaskMobile("staking");
+        }
+        return;
       }
-      return;
-    }
       const web3 = await getWeb3();
-    if (stakeData.totalStaked > 0) {
-      toast.error(
-        "You have already staked an amount. Additional staking is not allowed."
+      if (stakeData.totalStaked > 0) {
+        toast.error(
+          "You have already staked an amount. Additional staking is not allowed."
+        );
+        return;
+      }
+
+      setStakeLoading(true);
+
+      // First check if we have a provider that can send transactions
+      if (!window.ethereum || !window.ethereum.isMetaMask) {
+        toast.error("Please use MetaMask to perform this transaction");
+        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+          openInMetaMaskMobile("staking");
+        }
+        return;
+      }
+      const stakeContract = stakingIntegrateContract();
+      const dwtTokenContract= dwtTokenIntegrateContract()
+      const allowance = await dwtTokenContract.methods
+        .allowance(address, stakingAddress)
+        .call();
+
+      const readableBalance = web3.utils.toWei(
+        Math.floor(balanceOf).toString(),
+        "ether"
       );
-      return;
-    }
 
-    setStakeLoading(true);
-    
-    // First check if we have a provider that can send transactions
-    if (!window.ethereum || !window.ethereum.isMetaMask) {
-      toast.error("Please use MetaMask to perform this transaction");
-      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-        openInMetaMaskMobile('staking');
+      const amountFromWei = web3.utils.fromWei(Number(allowance), "ether");
+
+      if (amountFromWei < balanceOf) {
+        await dwtTokenContract.methods
+          .approve(stakingAddress, readableBalance)
+          .send({
+            from: address,
+          });
       }
-      return;
+
+      const stakes = await stakeContract.methods
+        .stake(readableBalance)
+        .send({ from: address });
+
+      if (stakes) {
+        toast.success("Token staked successfully!");
+        getStakingValue();
+        getTokenBalance();
+        getRewardRatesHanlde();
+      }
+    } catch (e: any) {
+      console.error("Staking error:", e);
+
+      // Special handling for mobile errors
+      if (e.message.includes("eth_sendTransaction") && isMetaMaskMobile()) {
+        toast.error("Please open in MetaMask Mobile to complete transaction");
+        openInMetaMaskMobile("staking");
+      } else {
+        toast.error("Something went wrong. Please try again");
+      }
+    } finally {
+      setStakeLoading(false);
     }
+  };
 
-    const allowance = await dwtTokenContract.methods
-      .allowance(address, stakingAddress)
-      .call();
-    
-    const readableBalance = web3.utils.toWei(
-      Math.floor(balanceOf).toString(),
-      "ether"
-    );
-    
-    const amountFromWei = web3.utils.fromWei(
-      Number(allowance),
-      "ether"
-    );
-
-    if (amountFromWei < balanceOf) {
-      await dwtTokenContract.methods
-        .approve(stakingAddress, readableBalance)
-        .send({
-          from: address,
-        });
-    }
-
-    const stakes = await stakingContract.methods
-      .stake(readableBalance)
-      .send({ from: address });
-      
-    if (stakes) {
-      toast.success("Token staked successfully!");
-      getStakingValue();
-      getTokenBalance();
-      getRewardRatesHanlde();
-    }
-  } catch (e: any) {
-    console.error("Staking error:", e);
-    
-    // Special handling for mobile errors
-    if (e.message.includes("eth_sendTransaction") && isMetaMaskMobile()) {
-      toast.error("Please open in MetaMask Mobile to complete transaction");
-      openInMetaMaskMobile('staking');
-    } else {
-      toast.error("Something went wrong. Please try again");
-    }
-  } finally {
-    setStakeLoading(false);
-  }
-};
-
-
-
-
-
-
-
-
-
-
-  // const handleStaking = async () => {
-  //   try {
-  //     if (!isConnected) {
-  //       toast.error("Please connect MetaMask first");
-  //       return;
-  //     }
-  //     if (stakeData.totalStaked > 0) {
-  //       toast.error(
-  //         "You have already staked an amount. Additional staking is not allowed."
-  //       );
-  //       return;
-  //     }
-  //     setStakeLoading(true);
-  //     const allowance = await dwtTokenContract.methods
-  //       .allowance(address, stakingAddress)
-  //       .call();
-      
-  //     const readableBalance = web3.utils.toWei(
-  //       Math.floor(balanceOf).toString(),
-  //       "ether"
-  //     );
-  //     const amountFromWei = web3.utils.fromWei(
-  //       Number(allowance),
-  //       "ether"
-  //     );
-  //     if (amountFromWei < balanceOf) {
-  //       await dwtTokenContract.methods
-  //         .approve(stakingAddress, readableBalance)
-  //         .send({
-  //           from: address,
-  //         });
-  //     }
-
-  //     // if (approve) {
-  //     const stakes = await stakingContract.methods
-  //       .stake(readableBalance)
-  //       .send({ from: address });
-  //     if (stakes) {
-  //       toast.success("Token staked successfully!");
-  //       getStakingValue();
-  //       getTokenBalance();
-  //       getRewardRatesHanlde();
-  //     }
-  //     // }
-  //   } catch (e) {
-  //     console.log("e", e);
-  //     alert(e)
-  //     toast.error("SomeTing want wrong.Please try again");
-  //   } finally {
-  //     setStakeLoading(false);
-  //   }
-  // };
   useEffect(() => {
-    if (stakingContract) {
-      getRewardRatesHanlde();
-    }
-  }, [stakingContract]);
+    getRewardRatesHanlde();
+  }, []);
   useEffect(() => {
-    if (stakingContract) {
-      getStakingValue();
-    }
-  }, [stakingContract, isConnected]);
-  useEffect(() => {
-    if (dwtTokenContract) {
-      getTokenBalance();
-    }
-  }, [dwtTokenContract, isConnected]);
-const loadContracts = async () => {
-      const dwtToken = await getDwtToken();
-      const staking = await getStaking();
-      const web3 = await getWeb3();
-      setStakingContract(staking);
-      setDwtTokenContract(dwtToken);
-      setWeb3(web3);
-    };
-  useEffect(() => {
-    if(isConnected){
-      loadContracts();
-    }
+    getStakingValue();
   }, [isConnected]);
+  useEffect(() => {
+      getTokenBalance();
+  }, [ isConnected]);
+
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 992);
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
-  // console.log("hasMinimumPurchased", hasMinimumPurchased);
-  // console.log("balanceOf", balanceOf);
+
 
   return (
     <div className={classes.background}>
@@ -459,13 +402,16 @@ const loadContracts = async () => {
             <div className={classes.card}>
               <span className={classes.label}>{t("percentOfPoolLabel")}</span>
               <span className={classes.value}>
-                {userPoolInfo ? Number(userPoolInfo?.pctOfPool).toFixed(2) : "0.00"}%
-                DWT
+                {userPoolInfo
+                  ? Number(userPoolInfo?.pctOfPool).toFixed(2)
+                  : "0.00"}
+                % DWT
               </span>
 
               <span className={classes.label}>{t("totalStakedLabel")}</span>
               <span className={classes.value}>
-                {stakeData ? Number(stakeData?.totalStaked).toFixed(2) : "0.00"} DWT
+                {stakeData ? Number(stakeData?.totalStaked).toFixed(2) : "0.00"}{" "}
+                DWT
               </span>
 
               <button
@@ -484,7 +430,7 @@ const loadContracts = async () => {
                 {t("estimatedRewardsLabel")}
               </span>
               <span className={classes.value}>
-                {rewardRate ? rewardRate.apr: "0.00"}% P/a
+                {rewardRate ? rewardRate.apr : "0.00"}% P/a
               </span>
 
               <ul className={classes.notes}>
