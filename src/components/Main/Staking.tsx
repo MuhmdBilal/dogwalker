@@ -199,7 +199,7 @@ const handleStaking = async () => {
     if (!isConnected) {
       toast.error("Please connect MetaMask first");
       if (isMetaMaskMobile()) {
-        openInMetaMaskMobile();
+        openInMetaMaskMobile('staking');
       }
       return;
     }
@@ -217,7 +217,7 @@ const handleStaking = async () => {
     if (!window.ethereum || !window.ethereum.isMetaMask) {
       toast.error("Please use MetaMask to perform this transaction");
       if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-        openInMetaMaskMobile();
+        openInMetaMaskMobile('staking');
       }
       return;
     }
@@ -260,7 +260,7 @@ const handleStaking = async () => {
     // Special handling for mobile errors
     if (e.message.includes("eth_sendTransaction") && isMetaMaskMobile()) {
       toast.error("Please open in MetaMask Mobile to complete transaction");
-      openInMetaMaskMobile();
+      openInMetaMaskMobile('staking');
     } else {
       toast.error("Something went wrong. Please try again");
     }

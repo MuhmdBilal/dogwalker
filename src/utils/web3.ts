@@ -82,37 +82,29 @@ export const isMobile = () => {
 };
 // Helper function for mobile deep linking
 // web.ts (updated version)
-export const openInMetaMaskMobile = () => {
-  // Get current URL and ensure it's properly formatted
-  let dappUrl = window.location.href;
+export const openInMetaMaskMobile = (specificPath?: string) => {
+  // Get the clean base URL without protocol
+  let baseUrl = window.location.hostname;
   
-  // Remove any existing encoding to prevent double encoding
-  try {
-    dappUrl = decodeURIComponent(dappUrl);
-  } catch (e) {
-    console.log("URL was not encoded, using as-is");
-  }
+  // Add path if needed (remove leading/trailing slashes)
+  const path = specificPath 
+    ? specificPath.replace(/^\/|\/$/g, '') 
+    : window.location.pathname.replace(/^\/|\/$/g, '');
   
-  // Ensure it starts with https:// (MetaMask requirement)
-  if (!dappUrl.startsWith('https://')) {
-    // If you're testing on localhost, you'll need to use ngrok or similar
-    console.error('DApp must be served over HTTPS for MetaMask deeplinking');
-    return;
-  }
+  // Construct the clean URL (without https:// and without encoded slashes)
+  const cleanUrl = path ? `${baseUrl}/${path}` : baseUrl;
   
   // Create the proper deeplink
-  const metamaskAppDeepLink = `https://metamask.app.link/dapp/${encodeURIComponent(
-    dappUrl.replace(/^https?:\/\//, '') // Remove http(s):// prefix
-  )}`;
+  const metamaskDeepLink = `https://metamask.app.link/dapp/${cleanUrl}`;
   
-  console.log('Opening MetaMask with:', metamaskAppDeepLink);
+  console.log('MetaMask deeplink:', metamaskDeepLink); // For debugging
   
   // Try to open in app first
-  window.location.href = metamaskAppDeepLink;
+  window.location.href = metamaskDeepLink;
   
   // Fallback after a short delay
   setTimeout(() => {
-    window.open(metamaskAppDeepLink, '_blank');
+    window.open(metamaskDeepLink, '_blank');
   }, 500);
 };
 export const isMetaMaskMobile = () => {
