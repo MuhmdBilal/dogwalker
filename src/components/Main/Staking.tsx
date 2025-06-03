@@ -15,7 +15,7 @@ import Ellipse from "@/assets/img/Ellipse 5.svg";
 import Ellipse2 from "@/assets/img/Ellipse 6.svg";
 import DogWalkerLogo from "@/assets/img/DogLogoWhite.svg";
 import StakingClaimRewardsButton from "@/assets/img/StakingClaimRewardsButton.svg";
-import { getDwtToken, getStaking, getWeb3 } from "@/utils/web3";
+import { getDwtToken, getStaking, getWeb3, openInMetaMaskMobile } from "@/utils/web3";
 import { useAccount } from "wagmi";
 import { toast } from "react-toastify";
 import Link from "next/link";
@@ -194,59 +194,134 @@ const Staking = ({
       setUnstakeLoading(false);
     }
   };
-
-  const handleStaking = async () => {
-    try {
-      if (!isConnected) {
-        toast.error("Please connect MetaMask first");
-        return;
-      }
-      if (stakeData.totalStaked > 0) {
-        toast.error(
-          "You have already staked an amount. Additional staking is not allowed."
-        );
-        return;
-      }
-      setStakeLoading(true);
-      const allowance = await dwtTokenContract.methods
-        .allowance(address, stakingAddress)
-        .call();
+const handleStaking = async () => {
+  try {
+    if (!isConnected) {
+      toast.error("Please connect MetaMask first");
       
-      const readableBalance = web3.utils.toWei(
-        Math.floor(balanceOf).toString(),
-        "ether"
-      );
-      const amountFromWei = web3.utils.fromWei(
-        Number(allowance),
-        "ether"
-      );
-      if (amountFromWei < balanceOf) {
-        await dwtTokenContract.methods
-          .approve(stakingAddress, readableBalance)
-          .send({
-            from: address,
-          });
+      // Special handling for mobile
+      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        openInMetaMaskMobile();
       }
-
-      // if (approve) {
-      const stakes = await stakingContract.methods
-        .stake(readableBalance)
-        .send({ from: address });
-      if (stakes) {
-        toast.success("Token staked successfully!");
-        getStakingValue();
-        getTokenBalance();
-        getRewardRatesHanlde();
-      }
-      // }
-    } catch (e) {
-      console.log("e", e);
-      alert(e)
-      toast.error("SomeTing want wrong.Please try again");
-    } finally {
-      setStakeLoading(false);
+      return;
     }
-  };
+
+    if (stakeData.totalStaked > 0) {
+      toast.error(
+        "You have already staked an amount. Additional staking is not allowed."
+      );
+      return;
+    }
+
+    setStakeLoading(true);
+    
+    // First check if we have a provider that can send transactions
+    if (!window.ethereum || !window.ethereum.isMetaMask) {
+      toast.error("Please use MetaMask to perform this transaction");
+      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        openInMetaMaskMobile();
+      }
+      return;
+    }
+
+    const allowance = await dwtTokenContract.methods
+      .allowance(address, stakingAddress)
+      .call();
+    
+    const readableBalance = web3.utils.toWei(
+      Math.floor(balanceOf).toString(),
+      "ether"
+    );
+    
+    const amountFromWei = web3.utils.fromWei(
+      Number(allowance),
+      "ether"
+    );
+
+    if (amountFromWei < balanceOf) {
+      await dwtTokenContract.methods
+        .approve(stakingAddress, readableBalance)
+        .send({
+          from: address,
+        });
+    }
+
+    const stakes = await stakingContract.methods
+      .stake(readableBalance)
+      .send({ from: address });
+      
+    if (stakes) {
+      toast.success("Token staked successfully!");
+      getStakingValue();
+      getTokenBalance();
+      getRewardRatesHanlde();
+    }
+  } catch (e: any) {
+    console.error("Staking error:", e);
+    
+    // Special handling for mobile errors
+    if (e.message.includes("eth_sendTransaction")) {
+      toast.error("Please open in MetaMask Mobile to complete transaction");
+      openInMetaMaskMobile();
+    } else {
+      toast.error("Something went wrong. Please try again");
+    }
+  } finally {
+    setStakeLoading(false);
+  }
+};
+  // const handleStaking = async () => {
+  //   try {
+  //     if (!isConnected) {
+  //       toast.error("Please connect MetaMask first");
+  //       return;
+  //     }
+  //     if (stakeData.totalStaked > 0) {
+  //       toast.error(
+  //         "You have already staked an amount. Additional staking is not allowed."
+  //       );
+  //       return;
+  //     }
+  //     setStakeLoading(true);
+  //     const allowance = await dwtTokenContract.methods
+  //       .allowance(address, stakingAddress)
+  //       .call();
+      
+  //     const readableBalance = web3.utils.toWei(
+  //       Math.floor(balanceOf).toString(),
+  //       "ether"
+  //     );
+  //     const amountFromWei = web3.utils.fromWei(
+  //       Number(allowance),
+  //       "ether"
+  //     );
+  //     if (amountFromWei < balanceOf) {
+  //       await dwtTokenContract.methods
+  //         .approve(stakingAddress, readableBalance)
+  //         .send({
+  //           from: address,
+  //         });
+  //     }
+
+  //     // if (approve) {
+  //     const stakes = await stakingContract.methods
+  //       .stake(readableBalance)
+  //       .send({ from: address });
+  //     if (stakes) {
+  //       toast.success("Token staked successfully!");
+  //       getStakingValue();
+  //       getTokenBalance();
+  //       getRewardRatesHanlde();
+  //     }
+  //     // }
+  //   } catch (e) {
+  //     console.log("e", e);
+  //     alert(e)
+  //     toast.error("SomeTing want wrong.Please try again");
+  //   } finally {
+  //     setStakeLoading(false);
+  //   }
+  // };
   useEffect(() => {
     if (stakingContract) {
       getRewardRatesHanlde();

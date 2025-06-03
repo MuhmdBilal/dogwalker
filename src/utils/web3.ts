@@ -4,60 +4,71 @@ import { usdtAbi, usdtAddress } from "@/contract/usdt";
 import  {dwtTokenAbi,dwtTokenAddress} from "@/contract/dwtToken"
 import { stakingAbi, stakingAddress } from "@/contract/staking";
 import Web3 from "web3";
-// import Web3 from 'web3';
-
-// // ✅ BSC Testnet RPC
-// const fallbackRPC = 'https://data-seed-prebsc-1-s1.binance.org:8545/';
-// let web3Instance: Web3 | null = null;
+const fallbackRPC = "https://data-seed-prebsc-1-s1.binance.org:8545/";
+let web3Instance: Web3 | null = null;
 
 // export const getWeb3 = async (): Promise<Web3> => {
 //   if (web3Instance) return web3Instance;
 
-//   if (typeof window !== 'undefined' && (window as any).ethereum) {
+//   // Check for MetaMask or mobile providers
+//   if (typeof window !== "undefined" && (window as any).ethereum) {
 //     try {
-//       await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
-//       web3Instance = new Web3((window as any).ethereum);
-//       return web3Instance;
+//       // Request account access
+//       await (window as any).ethereum.request({ method: "eth_requestAccounts" });
+
+//       // Mobile-specific check (MetaMask injects differently on mobile)
+//       if ((window as any).ethereum.isMetaMask) {
+//         web3Instance = new Web3((window as any).ethereum);
+
+//         // Mobile workaround: Listen for provider changes
+//         (window as any).ethereum.on("chainChanged", () =>
+//           window.location.reload()
+//         );
+//         (window as any).ethereum.on("accountsChanged", () =>
+//           window.location.reload()
+//         );
+
+//         return web3Instance;
+//       }
 //     } catch (error) {
-//       console.warn('MetaMask not connected. Using BSC Testnet fallback provider.');
+//       console.warn("MetaMask connection failed:", error);
 //     }
 //   }
 
+//   // Fallback to BSC Testnet RPC
+//   console.warn("Using fallback BSC Testnet provider");
 //   web3Instance = new Web3(new Web3.providers.HttpProvider(fallbackRPC));
 //   return web3Instance;
 // };
 
-
-// ✅ BSC Testnet RPC
-const fallbackRPC = "https://data-seed-prebsc-1-s1.binance.org:8545/";
-let web3Instance: Web3 | null = null;
-
 export const getWeb3 = async (): Promise<Web3> => {
   if (web3Instance) return web3Instance;
 
-  // Check for MetaMask or mobile providers
+  // Check for any Ethereum provider
   if (typeof window !== "undefined" && (window as any).ethereum) {
     try {
-      // Request account access
-      await (window as any).ethereum.request({ method: "eth_requestAccounts" });
+      const provider = (window as any).ethereum;
+      
+      // Handle both desktop and mobile providers
+      await provider.request({ method: "eth_requestAccounts" });
+      
+      web3Instance = new Web3(provider);
 
-      // Mobile-specific check (MetaMask injects differently on mobile)
-      if ((window as any).ethereum.isMetaMask) {
-        web3Instance = new Web3((window as any).ethereum);
+      // Add event listeners for changes
+      provider.on("chainChanged", () => window.location.reload());
+      provider.on("accountsChanged", () => window.location.reload());
 
-        // Mobile workaround: Listen for provider changes
-        (window as any).ethereum.on("chainChanged", () =>
-          window.location.reload()
-        );
-        (window as any).ethereum.on("accountsChanged", () =>
-          window.location.reload()
-        );
-
-        return web3Instance;
-      }
+      return web3Instance;
     } catch (error) {
-      console.warn("MetaMask connection failed:", error);
+      console.warn("Ethereum provider connection failed:", error);
+      // Fall through to fallback
     }
+  }
+
+  // For mobile browsers that don't inject window.ethereum automatically
+  if (typeof window !== "undefined" && (window as any).web3) {
+    web3Instance = new Web3((window as any).web3.currentProvider);
+    return web3Instance;
   }
 
   // Fallback to BSC Testnet RPC
@@ -66,13 +77,23 @@ export const getWeb3 = async (): Promise<Web3> => {
   return web3Instance;
 };
 
+export const isMobile = () => {
+  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+};
 // Helper function for mobile deep linking
 export const openInMetaMaskMobile = () => {
+  if (!isMobile()) return;
+  
   const dappUrl = window.location.href;
   const metamaskAppDeepLink = `https://metamask.app.link/dapp/${encodeURIComponent(
     dappUrl
   )}`;
-  window.open(metamaskAppDeepLink, "_blank");
+  
+  // Try to open in app first, then fallback to browser
+  window.location.href = metamaskAppDeepLink;
+  setTimeout(() => {
+    window.open(metamaskAppDeepLink, "_blank");
+  }, 500);
 };
 export const getICOContract = async (): Promise<any | null> => {
   const web3 = await getWeb3();
