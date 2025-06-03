@@ -81,19 +81,43 @@ export const isMobile = () => {
   return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 };
 // Helper function for mobile deep linking
+// web.ts (updated version)
 export const openInMetaMaskMobile = () => {
-  if (!isMobile()) return;
+  // Get current URL and ensure it's properly formatted
+  let dappUrl = window.location.href;
   
-  const dappUrl = window.location.href;
+  // Remove any existing encoding to prevent double encoding
+  try {
+    dappUrl = decodeURIComponent(dappUrl);
+  } catch (e) {
+    console.log("URL was not encoded, using as-is");
+  }
+  
+  // Ensure it starts with https:// (MetaMask requirement)
+  if (!dappUrl.startsWith('https://')) {
+    // If you're testing on localhost, you'll need to use ngrok or similar
+    console.error('DApp must be served over HTTPS for MetaMask deeplinking');
+    return;
+  }
+  
+  // Create the proper deeplink
   const metamaskAppDeepLink = `https://metamask.app.link/dapp/${encodeURIComponent(
-    dappUrl
+    dappUrl.replace(/^https?:\/\//, '') // Remove http(s):// prefix
   )}`;
   
-  // Try to open in app first, then fallback to browser
+  console.log('Opening MetaMask with:', metamaskAppDeepLink);
+  
+  // Try to open in app first
   window.location.href = metamaskAppDeepLink;
+  
+  // Fallback after a short delay
   setTimeout(() => {
-    window.open(metamaskAppDeepLink, "_blank");
+    window.open(metamaskAppDeepLink, '_blank');
   }, 500);
+};
+export const isMetaMaskMobile = () => {
+  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) && 
+         !/MetaMaskMobile|FBAV|FBAN|FBIOS|Twitter/i.test(navigator.userAgent);
 };
 export const getICOContract = async (): Promise<any | null> => {
   const web3 = await getWeb3();

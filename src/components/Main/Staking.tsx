@@ -15,7 +15,7 @@ import Ellipse from "@/assets/img/Ellipse 5.svg";
 import Ellipse2 from "@/assets/img/Ellipse 6.svg";
 import DogWalkerLogo from "@/assets/img/DogLogoWhite.svg";
 import StakingClaimRewardsButton from "@/assets/img/StakingClaimRewardsButton.svg";
-import { getDwtToken, getStaking, getWeb3, openInMetaMaskMobile } from "@/utils/web3";
+import { getDwtToken, getStaking, getWeb3, isMetaMaskMobile, openInMetaMaskMobile } from "@/utils/web3";
 import { useAccount } from "wagmi";
 import { toast } from "react-toastify";
 import Link from "next/link";
@@ -198,9 +198,7 @@ const handleStaking = async () => {
   try {
     if (!isConnected) {
       toast.error("Please connect MetaMask first");
-      
-      // Special handling for mobile
-      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      if (isMetaMaskMobile()) {
         openInMetaMaskMobile();
       }
       return;
@@ -260,7 +258,7 @@ const handleStaking = async () => {
     console.error("Staking error:", e);
     
     // Special handling for mobile errors
-    if (e.message.includes("eth_sendTransaction")) {
+    if (e.message.includes("eth_sendTransaction") && isMetaMaskMobile()) {
       toast.error("Please open in MetaMask Mobile to complete transaction");
       openInMetaMaskMobile();
     } else {
