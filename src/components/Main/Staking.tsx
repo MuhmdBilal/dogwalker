@@ -21,7 +21,6 @@ import { toast } from "react-toastify";
 import Link from "next/link";
 import { stakingAddress } from "@/contract/staking";
 import { error } from "console";
-import ErrorBoundary from "./ErrorBoundary";
 const Staking = ({
   setHasMinimumPurchased,
   hasMinimumPurchased,
@@ -195,152 +194,81 @@ const Staking = ({
       setUnstakeLoading(false);
     }
   };
-  const handleStaking = async () => {
+ 
+const handleStaking = async () => {
   try {
-    // 1. Check if wallet is connected
     if (!isConnected) {
       toast.error("Please connect MetaMask first");
-      
-      // For mobile users - open MetaMask app directly
       if (isMetaMaskMobile()) {
-        try {
-          await openInMetaMaskMobile('staking');
-        } catch (mobileError) {
-          console.error('Mobile deeplink failed:', mobileError);
-          toast.error("Couldn't open MetaMask. Please install the app.");
-        }
+        openInMetaMaskMobile('staking');
       }
       return;
     }
 
-    // 2. Check if already staked
     if (stakeData.totalStaked > 0) {
-      toast.error("You've already staked tokens");
+      toast.error(
+        "You have already staked an amount. Additional staking is not allowed."
+      );
       return;
     }
 
-    // 3. Start loading state
     setStakeLoading(true);
+    
+    // First check if we have a provider that can send transactions
+    if (!window.ethereum || !window.ethereum.isMetaMask) {
+      toast.error("Please use MetaMask to perform this transaction");
+      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        openInMetaMaskMobile('staking');
+      }
+      return;
+    }
 
-    // 4. Check and approve token allowance if needed
     const allowance = await dwtTokenContract.methods
       .allowance(address, stakingAddress)
       .call();
+    
+    const readableBalance = web3.utils.toWei(
+      Math.floor(balanceOf).toString(),
+      "ether"
+    );
+    
+    const amountFromWei = web3.utils.fromWei(
+      Number(allowance),
+      "ether"
+    );
 
-    const stakeAmountWei = web3.utils.toWei(balanceOf.toString(), 'ether');
-    const currentAllowanceWei = web3.utils.toWei(allowance.toString(), 'ether');
-
-    if (Number(currentAllowanceWei) < Number(stakeAmountWei)) {
+    if (amountFromWei < balanceOf) {
       await dwtTokenContract.methods
-        .approve(stakingAddress, stakeAmountWei)
-        .send({ from: address });
+        .approve(stakingAddress, readableBalance)
+        .send({
+          from: address,
+        });
     }
 
-    // 5. Execute stake
-    const stakeResult = await stakingContract.methods
-      .stake(stakeAmountWei)
+    const stakes = await stakingContract.methods
+      .stake(readableBalance)
       .send({ from: address });
-
-    // 6. Handle success
-    if (stakeResult) {
-      toast.success("Tokens staked successfully!");
-      // Refresh data
+      
+    if (stakes) {
+      toast.success("Token staked successfully!");
       getStakingValue();
       getTokenBalance();
       getRewardRatesHanlde();
     }
-
-  } catch (error:any) {
-    console.error("Staking error:", error);
+  } catch (e: any) {
+    console.error("Staking error:", e);
     
-    // Special handling for mobile transaction errors
-    if (error.message.includes("eth_sendTransaction") && isMetaMaskMobile()) {
+    // Special handling for mobile errors
+    if (e.message.includes("eth_sendTransaction") && isMetaMaskMobile()) {
       toast.error("Please open in MetaMask Mobile to complete transaction");
       openInMetaMaskMobile('staking');
-    } 
-    // General error handling
-    else {
-      toast.error(error.message || "Transaction failed");
+    } else {
+      toast.error("Something went wrong. Please try again");
     }
   } finally {
-    // 7. Reset loading state
     setStakeLoading(false);
   }
 };
-// const handleStaking = async () => {
-//   try {
-//     if (!isConnected) {
-//       toast.error("Please connect MetaMask first");
-//       if (isMetaMaskMobile()) {
-//         openInMetaMaskMobile('staking');
-//       }
-//       return;
-//     }
-
-//     if (stakeData.totalStaked > 0) {
-//       toast.error(
-//         "You have already staked an amount. Additional staking is not allowed."
-//       );
-//       return;
-//     }
-
-//     setStakeLoading(true);
-    
-//     // First check if we have a provider that can send transactions
-//     if (!window.ethereum || !window.ethereum.isMetaMask) {
-//       toast.error("Please use MetaMask to perform this transaction");
-//       if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-//         openInMetaMaskMobile('staking');
-//       }
-//       return;
-//     }
-
-//     const allowance = await dwtTokenContract.methods
-//       .allowance(address, stakingAddress)
-//       .call();
-    
-//     const readableBalance = web3.utils.toWei(
-//       Math.floor(balanceOf).toString(),
-//       "ether"
-//     );
-    
-//     const amountFromWei = web3.utils.fromWei(
-//       Number(allowance),
-//       "ether"
-//     );
-
-//     if (amountFromWei < balanceOf) {
-//       await dwtTokenContract.methods
-//         .approve(stakingAddress, readableBalance)
-//         .send({
-//           from: address,
-//         });
-//     }
-
-//     const stakes = await stakingContract.methods
-//       .stake(readableBalance)
-//       .send({ from: address });
-      
-//     if (stakes) {
-//       toast.success("Token staked successfully!");
-//       getStakingValue();
-//       getTokenBalance();
-//       getRewardRatesHanlde();
-//     }
-//   } catch (e: any) {
-//     console.error("Staking error:", e);
-    
-//     // Special handling for mobile errors
-//     if (e.message.includes("eth_sendTransaction") && isMetaMaskMobile()) {
-//       toast.error("Please open in MetaMask Mobile to complete transaction");
-//       openInMetaMaskMobile('staking');
-//     } else {
-//       toast.error("Something went wrong. Please try again");
-//     }
-//   } finally {
-//     setStakeLoading(false);
-//   }
-// };
 
 
 
@@ -440,7 +368,6 @@ const Staking = ({
   // console.log("balanceOf", balanceOf);
 
   return (
-    <ErrorBoundary > 
     <div className={classes.background}>
       <div className={classes.circleWrapper}>
         <Image src={StakingCircleLines} alt="Dekoracyjne okręgi" priority />
@@ -632,7 +559,6 @@ const Staking = ({
         </div>
       </section>
     </div>
-    </ErrorBoundary>
   );
 };
 

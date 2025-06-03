@@ -80,8 +80,7 @@ export const getWeb3 = async (): Promise<Web3> => {
 export const isMobile = () => {
   return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 };
-// Helper function for mobile deep linking
-// utils/web.ts
+
 export const openInMetaMaskMobile = (path = '') => {
   try {
     if (typeof window === 'undefined') {
@@ -127,6 +126,8 @@ export const isMetaMaskMobile = () => {
          !/MetaMaskMobile|FBAV|FBAN|FBIOS|Twitter/i.test(navigator.userAgent);
 };
 
+
+// Contract
 export const getICOContract = async (): Promise<any | null> => {
   const web3 = await getWeb3();
   if (web3) {
