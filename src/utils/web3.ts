@@ -82,7 +82,7 @@ export const openInMetaMaskMobile = (path = '') => {
       window.open(metamaskDeepLink, '_blank', 'noopener,noreferrer');
     }, 500);
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Deeplink error:', error);
     throw new Error(`Failed to create MetaMask deeplink: ${error.message}`);
   }
