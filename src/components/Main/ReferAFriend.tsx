@@ -19,23 +19,33 @@ const [copied, setCopied] = useState(false);
   };
   
 
-const handleCopy = async () => {
+const copyToClipboard = (text: string) => {
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.setAttribute("readonly", "");
+  textarea.style.position = "absolute";
+  textarea.style.left = "-9999px";
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand("copy");
+  document.body.removeChild(textarea);
+};
+
+const handleCopy = () => {
   if (!generateAddress) return;
-
   try {
-    await navigator.clipboard.writeText(generateAddress);
+    copyToClipboard(generateAddress);
     setCopied(true);
-
-    setTimeout(() => {
-      setCopied(false);
-    }, 1000);
+    setTimeout(() => setCopied(false), 1000);
   } catch (err) {
-    console.error("Failed to copy:", err);
+    console.error("Fallback copy failed:", err);
   }
 };
   useEffect(() => {
     if (typeof window !== "undefined") {
       const { protocol, host } = window.location;
+      console.log("protocol", protocol);
+      
       setUrl(`${protocol}//${host}`);
     }
   }, []);

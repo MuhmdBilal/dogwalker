@@ -35,14 +35,14 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
 }) => {
   const [asset, setAsset] = useState<any>("");
   // const web3 = new Web3("https://data-seed-prebsc-1-s1.binance.org:8545/");
-  // const web3 = new Web3(window.ethereum as any); 
-  let web3 : any ; 
-  if (typeof window !== 'undefined' && window.ethereum) {
-   web3 = new Web3(window.ethereum);
-  // Rest of your code
-} else {
-  console.error('Ethereum provider not found!');
-}
+  // const web3 = new Web3(window.ethereum as any);
+  let web3: any;
+  if (typeof window !== "undefined" && window.ethereum) {
+    web3 = new Web3(window.ethereum);
+    // Rest of your code
+  } else {
+    console.error("Ethereum provider not found!");
+  }
   const [hash, setHash] = useState<any>(null);
   const [dwtAmount, setDwtAmount] = useState("");
   const [referrerAddress, setReferrerAddress] = useState<any>("");
@@ -133,7 +133,7 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
       ? referrerAddress
       : referAddres
       ? referAddres
-      : ownerAddress;
+      : "0x0000000000000000000000000000000000000000";
     const allowance = await tokenContract.methods
       .allowance(address, icoAddress)
       .call();
@@ -144,10 +144,17 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
         .approve(icoAddress, payableAmount)
         .send({ from: address });
     }
+    const gas = await icoContract.methods
+      .buyTokens(weiValue, asset, addresss)
+      .estimateGas({
+        from: address,
+        value: 0,
+      });
 
     await icoContract.methods.buyTokens(weiValue, asset, addresss).send({
       from: address,
       value: "0",
+      gas,
     });
 
     detailValue();
@@ -169,15 +176,6 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
       const usdtContract = usdtIntegrateContract();
       const usdcContract = usdcIntegrateContract();
       const web3 = await getWeb3();
-      // if (!(window as any).ethereum?.isConnected?.()) {
-      //   if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-      //     openInMetaMaskMobile();
-      //     return;
-      //   } else {
-      //     toast.error("Please connect MetaMask first");
-      //     return;
-      //   }
-      // }
       if (!dwtAmount) {
         setError(true);
         return;
@@ -192,11 +190,23 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
           ? referrerAddress
           : referAddres
           ? referAddres
-          : ownerAddress;
+          : "0x0000000000000000000000000000000000000000";
+        const gas = await icoContract.methods
+          .buyTokens(weiValue, asset, addresss)
+          .estimateGas({
+            from: address,
+            value: calculateValue.toString(),
+          });
+
         await icoContract.methods.buyTokens(weiValue, asset, addresss).send({
           from: address,
           value: calculateValue.toString(),
+          gas, // Include estimated gas here
         });
+        // await icoContract.methods.buyTokens(weiValue, asset, addresss).send({
+        //   from: address,
+        //   value: calculateValue.toString(),
+        // });
         getValueByAddress();
         detailValue();
         resetForm();
@@ -298,7 +308,7 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
                       ? referrerAddress
                       : referAddres
                       ? referAddres
-                      : (ownerAddress as string)
+                      : "0x0000000000000000000000000000000000000000"
                   }
                   readOnly
                   //   onChange={(e) => setReferrerAddress(e.target.value)}
