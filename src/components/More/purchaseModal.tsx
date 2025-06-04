@@ -188,8 +188,8 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
       if (asset == 0) {
         const addresss = referrerAddress
           ? referrerAddress
-          : referAddres
-          ? referAddres
+          // : referAddres
+          // ? referAddres
           : "0x0000000000000000000000000000000000000000";
         const gas = await icoContract.methods
           .buyTokens(weiValue, asset, addresss)
@@ -306,8 +306,8 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
                   value={
                     referrerAddress
                       ? referrerAddress
-                      : referAddres
-                      ? referAddres
+                      // : referAddres
+                      // ? referAddres
                       : "0x0000000000000000000000000000000000000000"
                   }
                   readOnly
