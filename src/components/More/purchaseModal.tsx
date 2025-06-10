@@ -126,7 +126,7 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
     const balance = await tokenContract.methods.balanceOf(address).call();
     const readableBalance = web3.utils.fromWei(balance, "ether");
 
-    console.log("Balance", readableBalance , dwtAmount , payableAmountFromWei)
+    console.log("Balance", readableBalance, dwtAmount, payableAmountFromWei);
     if (parseFloat(payableAmountFromWei) > parseFloat(readableBalance)) {
       toast.error("Insufficient balance");
       return;
@@ -288,6 +288,7 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
                 )}
               </label>
 
+              {console.log("payable Ampunt", payableAmountFromWei)}
               <label>
                 Payable Amount:
                 <input

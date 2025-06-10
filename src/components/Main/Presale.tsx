@@ -27,7 +27,7 @@ const Presale = ({
   setBalanceOf,
   setReferAddress,
   referAddres,
-  setUserSpendUsdc
+  setUserSpendUsdc,
 }: any) => {
   const { t } = useTranslation("presale");
   const [isMobile, setIsMobile] = useState(false);
@@ -43,7 +43,7 @@ const Presale = ({
     const ico_Contract = new web3.eth.Contract(icoAbi, icoAddress);
     return ico_Contract;
   };
-   const stakingIntegrateContract = () => {
+  const stakingIntegrateContract = () => {
     const stake_Contract = new web3.eth.Contract(stakingAbi, stakingAddress);
     return stake_Contract;
   };
@@ -52,22 +52,22 @@ const Presale = ({
     return ico_Contract;
   };
 
-  useEffect(() =>{
-
-    console.log("Tokens Sold", tokensSoldData)
-
-  }, [])
+  useEffect(() => {
+    console.log("Tokens Sold", tokensSoldData);
+  }, []);
 
   const getValue = async () => {
     try {
-      const icoContract = icoIntegrateContract()
+      const icoContract = icoIntegrateContract();
       const icoRemaining = await icoContract.methods.icoRemaining().call();
       const icoRemainingFromWei = web3.utils.fromWei(
         Number(icoRemaining),
         "ether"
       );
       setIcoRemaining(icoRemainingFromWei);
-      const getCurrentPrice = await icoContract.methods.getCurrentPrice().call();
+      const getCurrentPrice = await icoContract.methods
+        .getCurrentPrice()
+        .call();
       const getCurrentPriceFromWei = web3.utils.fromWei(
         Number(getCurrentPrice),
         "ether"
@@ -85,7 +85,10 @@ const Presale = ({
       const maxPaiseFromWei = web3.utils.fromWei(Number(maxPaise), "ether");
       const percentageRaised =
         Number(maxPaiseFromWei) > 0
-          ? Math.min(((Number(totalRaisedUSDFromWei)) / Number(maxPaiseFromWei)) * 100, 100)
+          ? Math.min(
+              (Number(totalRaisedUSDFromWei) / Number(maxPaiseFromWei)) * 100,
+              100
+            )
           : 0;
       setPercentageRaised(percentageRaised);
       const currentRound = await icoContract.methods.currentRound().call();
@@ -97,9 +100,9 @@ const Presale = ({
   const getValueByAddress = async () => {
     try {
       if (isConnected) {
-        const icoContract = icoIntegrateContract()
-        const stakeContract = stakingIntegrateContract()
-        const dwtTokenContract= dwtTokenIntegrateContract()
+        const icoContract = icoIntegrateContract();
+        const stakeContract = stakingIntegrateContract();
+        const dwtTokenContract = dwtTokenIntegrateContract();
         const hasMinimumPurchased = await stakeContract.methods
           .hasMinimumPurchased(address)
           .call();
@@ -109,22 +112,27 @@ const Presale = ({
           .call();
         const balanceOfFromWei = web3.utils.fromWei(Number(balanceOf), "ether");
         setBalanceOf(balanceOfFromWei);
-        const referrerOf= await icoContract.methods.referrerOf(address).call();
-        setReferAddress(referrerOf)
-        const userSpentUSD = await icoContract.methods.referrerOf(address).call();
-        const userSpentUSDFromWei = web3.utils.fromWei(Number(userSpentUSD), "ether");
-        setUserSpendUsdc(userSpentUSDFromWei)
+        const referrerOf = await icoContract.methods.referrerOf(address).call();
+        setReferAddress(referrerOf);
+        const userSpentUSD = await icoContract.methods
+          .referrerOf(address)
+          .call();
+        const userSpentUSDFromWei = web3.utils.fromWei(
+          Number(userSpentUSD),
+          "ether"
+        );
+        setUserSpendUsdc(userSpentUSDFromWei);
       }
     } catch (e) {
       console.log("e", e);
     }
   };
   useEffect(() => {
-      getValueByAddress();
+    getValueByAddress();
   }, [isConnected]);
 
   useEffect(() => {
-      getValue();
+    getValue();
   }, []);
 
   useEffect(() => {
