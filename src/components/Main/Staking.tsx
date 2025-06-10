@@ -35,7 +35,7 @@ const Staking = ({
   balanceOf,
 }: any) => {
   const { t } = useTranslation("staking");
-  // const web3 = new Web3("https://data-seed-prebsc-1-s1.binance.org:8545/");
+  // const web3 = new Web3("https://bsc-dataseed.binance.org/");
   let web3: any;
   if (typeof window !== "undefined" && window.ethereum) {
     web3 = new Web3(window.ethereum);

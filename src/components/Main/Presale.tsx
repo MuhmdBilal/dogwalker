@@ -38,7 +38,7 @@ const Presale = ({
   const [tokensSoldData, setTokensSoldData] = useState<any>(0);
   const [percentageRaised, setPercentageRaised] = useState<any>(0);
   const [currentRound, setCurrentRound] = useState<any>(0);
-  const web3 = new Web3("https://data-seed-prebsc-1-s1.binance.org:8545/");
+  const web3 = new Web3("https://bsc-dataseed.binance.org/");
   const icoIntegrateContract = () => {
     const ico_Contract = new web3.eth.Contract(icoAbi, icoAddress);
     return ico_Contract;

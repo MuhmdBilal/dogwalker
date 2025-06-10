@@ -4,7 +4,7 @@ import { usdtAbi, usdtAddress } from "@/contract/usdt";
 import  {dwtTokenAbi,dwtTokenAddress} from "@/contract/dwtToken"
 import { stakingAbi, stakingAddress } from "@/contract/staking";
 import Web3 from "web3";
-const fallbackRPC = ["https://data-seed-prebsc-1-s1.binance.org:8545/", "https://bsc-testnet.public.blastapi.io", "https://bsc-testnet.drpc.org", "https://api.zan.top/bsc-testnet"];
+const fallbackRPC = ["https://bsc-dataseed.binance.org/", "https://bsc-testnet.public.blastapi.io", "https://bsc-testnet.drpc.org", "https://api.zan.top/bsc-testnet"];
 let web3Instance: Web3 | null = null;
 
 export const getWeb3 = async (): Promise<Web3> => {
