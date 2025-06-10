@@ -52,6 +52,12 @@ const Presale = ({
     return ico_Contract;
   };
 
+  useEffect(() =>{
+
+    console.log("Tokens Sold", tokensSoldData)
+
+  }, [])
+
   const getValue = async () => {
     try {
       const icoContract = icoIntegrateContract()

@@ -125,7 +125,9 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
     const icoContract = icoIntegrateContract();
     const balance = await tokenContract.methods.balanceOf(address).call();
     const readableBalance = web3.utils.fromWei(balance, "ether");
-    if (parseFloat(dwtAmount) > parseFloat(readableBalance)) {
+
+    console.log("Balance", readableBalance , dwtAmount , payableAmountFromWei)
+    if (parseFloat(payableAmountFromWei) > parseFloat(readableBalance)) {
       toast.error("Insufficient balance");
       return;
     }
@@ -188,9 +190,9 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
       if (asset == 0) {
         const addresss = referrerAddress
           ? referrerAddress
-          // : referAddres
-          // ? referAddres
-          : "0x0000000000000000000000000000000000000000";
+          : // : referAddres
+            // ? referAddres
+            "0x0000000000000000000000000000000000000000";
         const gas = await icoContract.methods
           .buyTokens(weiValue, asset, addresss)
           .estimateGas({
@@ -306,9 +308,9 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
                   value={
                     referrerAddress
                       ? referrerAddress
-                      // : referAddres
-                      // ? referAddres
-                      : "0x0000000000000000000000000000000000000000"
+                      : // : referAddres
+                        // ? referAddres
+                        "0x0000000000000000000000000000000000000000"
                   }
                   readOnly
                   //   onChange={(e) => setReferrerAddress(e.target.value)}
