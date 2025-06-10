@@ -6,25 +6,28 @@ import type { Chain } from "wagmi/chains"; // ✅ Correct import
 
 // Define BSC Testnet
 export const bscTestnet: Chain = {
-  id: 97,
-  name: "Binance Smart Chain Testnet",
-  // network: 'bsc-testnet',
+  id: 56,
+  name: "BNB Smart Chain",
+  // network: "bsc",
   nativeCurrency: {
-    name: "Binance Chain Native Token",
-    symbol: "tBNB",
     decimals: 18,
+    name: "BNB",
+    symbol: "BNB",
   },
   rpcUrls: {
-    default: { http: ["https://data-seed-prebsc-1-s1.binance.org:8545"] },
-    public: { http: ["https://data-seed-prebsc-1-s1.binance.org:8545"] },
+    default: {
+      http: ["https://bsc-dataseed.binance.org/"],
+    },
+    public: {
+      http: ["https://bsc-dataseed1.binance.org/"],
+    },
   },
   blockExplorers: {
     default: {
       name: "BscScan",
-      url: "https://testnet.bscscan.com",
+      url: "https://bscscan.com",
     },
   },
-  testnet: true,
 };
 
 export const projectId = "b393768fdcb069b24001e1a01b396221";

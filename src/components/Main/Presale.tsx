@@ -270,7 +270,7 @@ const Presale = ({
                 if (isConnected) {
                   setShowModal(true);
                 } else {
-                  toast.error("Please wellet connect first!");
+                  toast.error("Please wallet connect first!");
                 }
               }}
             >
